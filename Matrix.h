@@ -40,7 +40,6 @@ namespace mtm {
         const T& operator()(int row_num,int col_num) const;
         friend std::ostream& operator<<(std::ostream& os, const Matrix& matrix);
         Matrix transpose() const ;
-        static Matrix Identity(int dim);
         static Matrix<T> Diagonal(int dim, T value);
         int height() const;
         int width() const;
@@ -61,15 +60,15 @@ namespace mtm {
     template <class T>
     Matrix<bool> operator<(Matrix<T>& matrix, T value);
     template <class T>
-    Matrix<T> operator<=(Matrix<T>& matrix, T value);
+    Matrix<bool> operator<=(Matrix<T>& matrix, T value);
     template <class T>
-    Matrix<T> operator>(Matrix<T>& matrix, T value);
+    Matrix<bool> operator>(Matrix<T>& matrix, T value);
     template <class T>
-    Matrix<T> operator>=(Matrix<T>& matrix, T value);
+    Matrix<bool> operator>=(Matrix<T>& matrix, T value);
     template <class T>
-    Matrix<T> operator==(Matrix<T>& matrix, T value);
+    Matrix<bool> operator==(Matrix<T>& matrix, T value);
     template <class T>
-    Matrix<T> operator!=(Matrix<T>& matrix, T value);
+    Matrix<bool> operator!=(Matrix<T>& matrix, T value);
     template <class T>
     bool any(const Matrix<T>& matrix);
     template <class T>
@@ -316,17 +315,18 @@ namespace mtm {
     template<class T>
     Matrix<bool> operator<(Matrix<T>& matrix, T value)
     {
-        Matrix<T> matrix_new(matrix);
-        for (int j = 0; j < matrix_new.height(); ++j)
+        Dimensions dim(matrix.height(), matrix.width());
+        Matrix<bool> matrix_new(dim);
+        for (int i = 0; i < matrix_new.height(); ++i)
         {
-            for (int i = 0; i < matrix_new.width(); ++i)
+            for (int j = 0; j < matrix_new.width(); ++j)
             {
-                if(matrix_new(j,i) < value)
+                if(matrix(i,j) < value)
                 {
-                    matrix_new(j,i) = true;
+                    matrix_new(i,j) = true;
                 } else
                 {
-                    matrix_new(j,i) = false;
+                    matrix_new(i,j) = false;
                 }
             }
         }
@@ -338,19 +338,20 @@ namespace mtm {
     // Smaller or equal values become true
     // Larger values become false
     template <class T>
-    Matrix<T> operator<=(Matrix<T>& matrix, T value)
+    Matrix<bool> operator<=(Matrix<T>& matrix, T value)
     {
-        Matrix<T> matrix_new(matrix);
-        for (int j = 0; j < matrix_new.height(); ++j)
+        Dimensions dim(matrix.height(), matrix.width());
+        Matrix<bool> matrix_new(dim);
+        for (int i = 0; i < matrix_new.height(); ++i)
         {
-            for (int i = 0; i < matrix_new.width(); ++i)
+            for (int j = 0; j < matrix_new.width(); ++j)
             {
-                if(matrix_new(j,i) <= value)
+                if(matrix(i,j) <= value)
                 {
-                    matrix_new(j,i) = true;
+                    matrix_new(i,j) = true;
                 } else
                 {
-                    matrix_new(j,i) = false;
+                    matrix_new(i,j) = false;
                 }
             }
         }
@@ -362,19 +363,20 @@ namespace mtm {
     // Larger values become true
     // Smaller values become false
     template <class T>
-    Matrix<T> operator>(Matrix<T>& matrix, T value)
+    Matrix<bool> operator>(Matrix<T>& matrix, T value)
     {
-        Matrix<T> matrix_new(matrix);
-        for (int j = 0; j < matrix_new.height(); ++j)
+        Dimensions dim(matrix.height(), matrix.width());
+        Matrix<bool> matrix_new(dim);
+        for (int i = 0; i < matrix_new.height(); ++i)
         {
-            for (int i = 0; i < matrix_new.width(); ++i)
+            for (int j = 0; j < matrix_new.width(); ++j)
             {
-                if(matrix_new(j,i) > value)
+                if(matrix(i,j) > value)
                 {
-                    matrix_new(j,i) = true;
+                    matrix_new(i,j) = true;
                 } else
                 {
-                    matrix_new(j,i) = false;
+                    matrix_new(i,j) = false;
                 }
             }
         }
@@ -386,19 +388,20 @@ namespace mtm {
     // Larger or equal values become true
     // Smaller values become false
     template <class T>
-    Matrix<T> operator>=(Matrix<T>& matrix, T value)
+    Matrix<bool> operator>=(Matrix<T>& matrix, T value)
     {
-        Matrix<T> matrix_new(matrix);
-        for (int j = 0; j < matrix_new.height(); ++j)
+        Dimensions dim(matrix.height(), matrix.width());
+        Matrix<bool> matrix_new(dim);
+        for (int i = 0; i < matrix_new.height(); ++i)
         {
-            for (int i = 0; i < matrix_new.width(); ++i)
+            for (int j = 0; j < matrix_new.width(); ++j)
             {
-                if(matrix_new(j,i) >= value)
+                if(matrix(i,j) >= value)
                 {
-                    matrix_new(j,i) = true;
+                    matrix_new(i,j) = true;
                 } else
                 {
-                    matrix_new(j,i) = false;
+                    matrix_new(i,j) = false;
                 }
             }
         }
@@ -410,19 +413,20 @@ namespace mtm {
     // Equal values become true
     // Unequal values become false
     template <class T>
-    Matrix<T> operator==(Matrix<T>& matrix, T value)
+    Matrix<bool> operator==(Matrix<T>& matrix, T value)
     {
-        Matrix<T> matrix_new(matrix);
-        for (int j = 0; j < matrix_new.height(); ++j)
+        Dimensions dim(matrix.height(), matrix.width());
+        Matrix<bool> matrix_new(dim);
+        for (int i = 0; i < matrix_new.height(); ++i)
         {
-            for (int i = 0; i < matrix_new.width(); ++i)
+            for (int j = 0; j < matrix_new.width(); ++j)
             {
-                if(matrix_new(j,i) == value)
+                if(matrix(i,j) == value)
                 {
-                    matrix_new(j,i) = true;
+                    matrix_new(i,j) = true;
                 } else
                 {
-                    matrix_new(j,i) = false;
+                    matrix_new(i,j) = false;
                 }
             }
         }
@@ -434,19 +438,20 @@ namespace mtm {
     // Unequal values become true
     // Equal values become false
     template <class T>
-    Matrix<T> operator!=(Matrix<T>& matrix, T value)
+    Matrix<bool> operator!=(Matrix<T>& matrix, T value)
     {
-        Matrix<T> matrix_new(matrix);
-        for (int j = 0; j < matrix_new.height(); ++j)
+        Dimensions dim(matrix.height(), matrix.width());
+        Matrix<bool> matrix_new(dim);
+        for (int i = 0; i < matrix_new.height(); ++i)
         {
-            for (int i = 0; i < matrix_new.width(); ++i)
+            for (int j = 0; j < matrix_new.width(); ++j)
             {
-                if(matrix_new(j,i) != value)
+                if(matrix(i,j) != value)
                 {
-                    matrix_new(j,i) = true;
+                    matrix_new(i,j) = true;
                 } else
                 {
-                    matrix_new(j,i) = false;
+                    matrix_new(i,j) = false;
                 }
             }
         }
