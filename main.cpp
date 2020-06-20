@@ -7,8 +7,22 @@ using std::endl;
 using namespace mtm;
 int main() {
 
-    Matrix<int> m1(Dimensions(3,4),5);
-//    TemArray<TemArray<IntMatrix>> a(5);
+    Matrix<IntMatrix> m1(Dimensions(3,4));
+    for (int i = 0; i < m1.height(); ++i) {
+        for (int j = 0; j < m1.width(); ++j) {
+            cout << m1(i,j) << endl;
+        }
+    }
+    IntMatrix im(Dimensions(2,7),5);
+    Matrix<IntMatrix> m2(Dimensions(3,4),im);
+    Matrix<IntMatrix> m3 = m2;
+    m1 = m2 = m3;
+    for (int i = 0; i < m1.height(); ++i) {
+        for (int j = 0; j < m1.width(); ++j) {
+            cout << m1(i,j) << endl;
+        }
+    }
+    //    TemArray<TemArray<IntMatrix>> a(5);
 //    for (int i = 0; i < a.size(); ++i) {
 //        for (int j = 0; j < a[i].size(); ++j) {
 //            Dimensions d(i+1,j+1);
