@@ -10,21 +10,12 @@
 
 
 namespace mtm {
-
-    class BadAccess : public std::exception {
-    public:
-        const char* what() const _NOEXCEPT override
-        {
-            return "Bad Access";
-        }
-    };
-
-
     template<class T>
     class Array {
         T *data;
         int length;
     public:
+        class BadAccess;
         explicit Array(int size = 10);
 
         Array(const Array<T> &a);
@@ -39,7 +30,6 @@ namespace mtm {
 
         const T &operator[](int index) const;
     };
-
 
     template<class T>
     Array<T>::Array(int size) {
@@ -90,7 +80,7 @@ namespace mtm {
     template<class T>
     T &Array<T>::operator[](int index) {
         if (index < 0 || index >= this->size()) {
-            throw BadAccess();
+            throw Array::BadAccess();
         }
         return data[index];
     }
@@ -98,10 +88,19 @@ namespace mtm {
     template<class T>
     const T &Array<T>::operator[](int index) const {
         if (index < 0 || index >= this->size()) {
-            throw BadAccess();
+            throw Array::BadAccess();
         }
         return data[index];
     }
+
+    template <class T>
+    class Array<T>::BadAccess : public std::exception {
+    public:
+        const char* what() const noexcept override
+        {
+            return "Bad Access";
+        }
+    };
 }
 
 #endif //HW3PARTB_ARRAY_H
