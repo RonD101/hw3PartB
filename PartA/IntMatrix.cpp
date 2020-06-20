@@ -33,6 +33,7 @@ IntMatrix::~IntMatrix()
     delete[] row;
 }
 
+// Function returns an identity matrix with specified dimensions
 IntMatrix IntMatrix::Identity(int dim) {
     Dimensions d(dim,dim);
     IntMatrix matrix = IntMatrix(d);
@@ -56,14 +57,17 @@ std::ostream& mtm::operator<<(std::ostream& os, const IntMatrix& matrix) {
     return os;
 }
 
+// Function to get number of rows of the matrix
 int IntMatrix::width() const {
     return dim.getCol();
 }
 
+// Function to get number of columns of the matrix
 int IntMatrix::height() const {
     return dim.getRow();
 }
 
+// Function to get the total number of values in the matrix
 int IntMatrix::size() const {
     return (this->height())*(this->width());
 }
@@ -98,6 +102,10 @@ IntMatrix& IntMatrix::operator=(const IntMatrix& matrix)
     return *this;
 }
 
+// Function to check which values in the matrix are smaller than the int passed
+// Returns new matrix with these rules:
+// Smaller values become 1
+// Larger values become 0
 IntMatrix mtm::operator<(IntMatrix& matrix, int num)
 {
     IntMatrix matrix_new(matrix);
@@ -117,6 +125,10 @@ IntMatrix mtm::operator<(IntMatrix& matrix, int num)
     return matrix_new;
 }
 
+// Function to check which values in the matrix are equal or smaller than the int passed
+// Returns new matrix with these rules:
+// Smaller or equal values become 1
+// Larger values become 0
 IntMatrix mtm::operator<=(IntMatrix& matrix, int num)
 {
     IntMatrix matrix_new(matrix);
@@ -135,6 +147,11 @@ IntMatrix mtm::operator<=(IntMatrix& matrix, int num)
     }
     return matrix_new;
 }
+
+// Function to check which values in the matrix are larger than the int passed
+// Returns new matrix with these rules:
+// Larger values become 1
+// Smaller values become 0
 IntMatrix mtm::operator>(IntMatrix& matrix, int num)
 {
     IntMatrix matrix_new(matrix);
@@ -153,6 +170,11 @@ IntMatrix mtm::operator>(IntMatrix& matrix, int num)
     }
     return matrix_new;
 }
+
+// Function to check which values in the matrix are equal or larger than the int passed
+// Returns new matrix with these rules:
+// Larger values become 1
+// Smaller values become 0
 IntMatrix mtm::operator>=(IntMatrix& matrix, int num)
 {
     IntMatrix matrix_new(matrix);
@@ -171,6 +193,11 @@ IntMatrix mtm::operator>=(IntMatrix& matrix, int num)
     }
     return matrix_new;
 }
+
+// Function to check which values in the matrix are equal to the int passed
+// Returns new matrix with these rules:
+// Equal values become 1
+// Unequal values become 0
 IntMatrix mtm::operator==(IntMatrix& matrix, int num)
 {
     IntMatrix matrix_new(matrix);
@@ -189,6 +216,11 @@ IntMatrix mtm::operator==(IntMatrix& matrix, int num)
     }
     return matrix_new;
 }
+
+// Function to check which values in the matrix are unequal to the int passed
+// Returns new matrix with these rules:
+// Unequal values become 1
+// Equal values become 0
 IntMatrix mtm::operator!=(IntMatrix& matrix, int num)
 {
     IntMatrix matrix_new(matrix);
@@ -208,6 +240,7 @@ IntMatrix mtm::operator!=(IntMatrix& matrix, int num)
     return matrix_new;
 }
 
+// Function returns a transposed matrix
 IntMatrix IntMatrix::transpose() const
 {
     Dimensions d(this->width(),this->height());
@@ -222,6 +255,7 @@ IntMatrix IntMatrix::transpose() const
     return matrix;
 }
 
+// Function returns new matrix which is the sum of the 2 matrices passed
 IntMatrix mtm::operator+(const IntMatrix &matrix1, const IntMatrix &matrix2)
 {
     IntMatrix matrix(matrix1.getDimensions());

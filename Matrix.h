@@ -7,6 +7,8 @@
 
 #include "Array.h"
 #include "Auxiliaries.h"
+using std::cout;
+using std::endl;
 
 namespace mtm {
     template<class T>
@@ -33,7 +35,6 @@ namespace mtm {
         const int& operator()(int row_num,int col_num) const;
         friend std::ostream& operator<<(std::ostream& os, const Matrix& matrix);
         Matrix transpose() const ;
-        static Matrix Identity(int dim);
         int height() const;
         int width() const;
         int size() const;
@@ -99,16 +100,19 @@ namespace mtm {
         const_iterator& operator=(const const_iterator&) = default;
     };
 
+    // Function to get number of rows of the matrix
     template<class T>
     int Matrix<T>::height() const {
         return dim.getRow();
     }
 
+    // Function to get number of columns of the matrix
     template<class T>
     int Matrix<T>::width() const {
         return dim.getCol();
     }
 
+    // Function to get the total number of values in the matrix
     template<class T>
     int Matrix<T>::size() const {
         return this->width()*this->height();
@@ -118,6 +122,118 @@ namespace mtm {
     Dimensions Matrix<T>::getDimensions() const {
         return this->dim;
     }
+
+//    template<class T>
+//    Matrix<T>::Matrix(const Dimensions &dimensions, int value) {
+//        try {
+//            int dim_row = dimensions.getRow();
+//            int dim_col = dimensions.getCol();
+//        } catch (const mtm::Matrix<int>::IllegalInitialization &e){
+//            cout<<e.what()<<endl;
+//        }
+//        //allocating rows
+//        row = new int *[dim_row];
+//        //allocating cols
+//        for (int i = 0; i < dim_row; ++i)
+//        {
+//            row[i] = new int[dim_col];
+//        }
+//        //setting default value
+//        for (int j = 0; j < dim_row; ++j)
+//        {
+//            for (int i = 0; i < dim_col; ++i)
+//            {
+//                (*this)(j,i) = value;
+//            }
+//        }
+//    }
+
+//    Matrix<class T> operator+(const Matrix<class T> &matrix1, const Matrix<class T> &matrix2) {
+//        Matrix<class T> matrix(matrix1.getDimensions());
+//        for (int i = 0; i < matrix.height(); ++i)
+//        {
+//            for (int j = 0; j < matrix.width(); ++j)
+//            {
+//                matrix(i,j) = matrix1(i,j) + matrix2(i,j);
+//            }
+//        }
+//        return matrix;
+//    }
+
+//     template<> Matrix<class T> Matrix<class T>::transpose() const {
+//        Dimensions d(this->width(),this->height());
+//        Matrix matrix(d);
+//        for (int j = 0; j < matrix.height(); ++j)
+//        {
+//            for (int i = 0; i < matrix.width(); ++i)
+//            {
+//                matrix(j,i) = (*this)(i,j);
+//            }
+//        }
+//        return matrix;
+//    }
+
+//    template<class T>
+//    Matrix::iterator Matrix<T>::begin() {
+//        return Matrix::iterator();
+//    }
+//
+//    template<class T>
+//    Matrix::iterator Matrix<T>::end() {
+//        return Matrix::iterator();
+//    }
+//
+//    template<class T>
+//    Matrix::const_iterator Matrix<T>::begin() const {
+//        return Matrix::const_iterator();
+//    }
+//    template<class T>
+//    Matrix::const_iterator Matrix<T>::end() const {
+//        return Matrix::const_iterator();
+//    }
+//
+//    template<class T>
+//    Matrix<T>::Matrix(const Matrix &matrix) {
+//
+//    }
+//
+//    template<class T>
+//    Matrix<T>::~Matrix() {
+//
+//    }
+//
+//    template<class T>
+//    Matrix &Matrix<T>::operator=(const Matrix &matrix) {
+//        return <#initializer#>;
+//    }
+//
+//    template<class T>
+//    Matrix &Matrix<T>::operator+=(const int value) {
+//        return <#initializer#>;
+//    }
+//
+//    template<class T>
+//    Matrix Matrix<T>::operator-() const {
+//        return Matrix();
+//    }
+//
+//    Matrix operator-(const Matrix &matrix1, const Matrix &matrix2) {
+//        return Matrix();
+//    }
+//
+//    template<class T>
+//    int &Matrix<T>::operator()(int row_num, int col_num) {
+//        return <#initializer#>;
+//    }
+//
+//    template<class T>
+//    const int &Matrix<T>::operator()(int row_num, int col_num) const {
+//        return <#initializer#>;
+//    }
+//
+//    std::ostream &operator<<(std::ostream &os, const Matrix &matrix) {
+//        return <#initializer#>;
+//    }
 }
 
 #endif //HW3PARTB_MATRIX_H
