@@ -40,7 +40,7 @@ namespace mtm {
         const int& operator()(int row_num,int col_num) const;
         friend std::ostream& operator<<(std::ostream& os, const Matrix& matrix);
         Matrix transpose() const ;
-        static Matrix Identity(int dim);
+        static Matrix<T> Diagonal(int dim, T value);
         int height() const;
         int width() const;
         int size() const;
@@ -58,17 +58,17 @@ namespace mtm {
     template <class T>
     Matrix<T> operator-(const Matrix<T>& matrix1, const Matrix<T>& matrix2);
     template <class T>
-    Matrix<T> operator<(Matrix<T>& matrix, int num);
+    Matrix<bool> operator<(Matrix<T>& matrix, T value);
     template <class T>
-    Matrix<T> operator<=(Matrix<T>& matrix, int num);
+    Matrix<T> operator<=(Matrix<T>& matrix, T value);
     template <class T>
-    Matrix<T> operator>(Matrix<T>& matrix, int num);
+    Matrix<T> operator>(Matrix<T>& matrix, T value);
     template <class T>
-    Matrix<T> operator>=(Matrix<T>& matrix, int num);
+    Matrix<T> operator>=(Matrix<T>& matrix, T value);
     template <class T>
-    Matrix<T> operator==(Matrix<T>& matrix, int num);
+    Matrix<T> operator==(Matrix<T>& matrix, T value);
     template <class T>
-    Matrix<T> operator!=(Matrix<T>& matrix, int num);
+    Matrix<T> operator!=(Matrix<T>& matrix, T value);
     template <class T>
     bool any(const Matrix<T>& matrix);
     template <class T>
@@ -220,7 +220,6 @@ namespace mtm {
 
 //    template<class T>
 //    Matrix<T>::~Matrix() {
-//
 //    }
 
     template<class T>
@@ -290,6 +289,165 @@ namespace mtm {
         os << (printMatrix(flatMatrix, dims));
         delete[] flatMatrix;
         return os;
+    }
+
+    // Function that returns a diagonal matrix
+    template<class T>
+    Matrix<T> Matrix<T>::Diagonal(int dim, T value) {
+        if(dim < 1)
+        {
+            throw Matrix<T>::IllegalInitialization();
+        }
+        Dimensions d(dim,dim);
+        Matrix matrix = Matrix(d, 0);
+        for (int i = 0; i < matrix.height(); ++i) {
+            matrix(i,i) = value;
+        }
+        return matrix;
+    }
+
+    // Function to check which values in the matrix are smaller than the value passed
+    // Returns new matrix with these rules:
+    // Smaller values become true
+    // Larger values become false
+    template<class T>
+    Matrix<bool> operator<(Matrix<T>& matrix, T value)
+    {
+        Matrix matrix_new(matrix);
+        for (int j = 0; j < matrix_new.height(); ++j)
+        {
+            for (int i = 0; i < matrix_new.width(); ++i)
+            {
+                if(matrix_new(j,i) < value)
+                {
+                    matrix_new(j,i) = true;
+                } else
+                {
+                    matrix_new(j,i) = false;
+                }
+            }
+        }
+        return matrix_new;
+    }
+
+    // Function to check which values in the matrix are equal or smaller than the value passed
+    // Returns new matrix with these rules:
+    // Smaller or equal values become true
+    // Larger values become false
+    template <class T>
+    Matrix<T> operator<=(Matrix<T>& matrix, T value)
+    {
+        Matrix matrix_new(matrix);
+        for (int j = 0; j < matrix_new.height(); ++j)
+        {
+            for (int i = 0; i < matrix_new.width(); ++i)
+            {
+                if(matrix_new(j,i) <= value)
+                {
+                    matrix_new(j,i) = true;
+                } else
+                {
+                    matrix_new(j,i) = false;
+                }
+            }
+        }
+        return matrix_new;
+    }
+
+    // Function to check which values in the matrix are larger than the value passed
+    // Returns new matrix with these rules:
+    // Larger values become true
+    // Smaller values become false
+    template <class T>
+    Matrix<T> operator>(Matrix<T>& matrix, T value)
+    {
+        Matrix matrix_new(matrix);
+        for (int j = 0; j < matrix_new.height(); ++j)
+        {
+            for (int i = 0; i < matrix_new.width(); ++i)
+            {
+                if(matrix_new(j,i) > value)
+                {
+                    matrix_new(j,i) = true;
+                } else
+                {
+                    matrix_new(j,i) = false;
+                }
+            }
+        }
+        return matrix_new;
+    }
+
+    // Function to check which values in the matrix are equal or larger than the value passed
+    // Returns new matrix with these rules:
+    // Larger or equal values become true
+    // Smaller values become false
+    template <class T>
+    Matrix<T> operator>=(Matrix<T>& matrix, T value)
+    {
+        Matrix matrix_new(matrix);
+        for (int j = 0; j < matrix_new.height(); ++j)
+        {
+            for (int i = 0; i < matrix_new.width(); ++i)
+            {
+                if(matrix_new(j,i) >= value)
+                {
+                    matrix_new(j,i) = true;
+                } else
+                {
+                    matrix_new(j,i) = false;
+                }
+            }
+        }
+        return matrix_new;
+    }
+
+    // Function to check which values in the matrix are equal to the value passed
+    // Returns new matrix with these rules:
+    // Equal values become true
+    // Unequal values become false
+    template <class T>
+    Matrix<T> operator==(Matrix<T>& matrix, T value)
+    {
+        Matrix matrix_new(matrix);
+        for (int j = 0; j < matrix_new.height(); ++j)
+        {
+            for (int i = 0; i < matrix_new.width(); ++i)
+            {
+                if(matrix_new(j,i) == value)
+                {
+                    matrix_new(j,i) = true;
+                } else
+                {
+                    matrix_new(j,i) = false;
+                }
+            }
+        }
+        return matrix_new;
+    }
+
+    // Function to check which values in the matrix are unequal to the value passed
+    // Returns new matrix with these rules:
+    // Unequal values become true
+    // Equal values become false
+    template <class T>
+    Matrix<T> operator!=(Matrix<T>& matrix, T value)
+    {
+        Matrix matrix_new(matrix);
+        for (int j = 0; j < matrix_new.height(); ++j)
+        {
+            for (int i = 0; i < matrix_new.width(); ++i)
+            {
+                if(matrix_new(j,i) != value)
+                {
+                    matrix_new(j,i) = true;
+                } else
+                {
+                    matrix_new(j,i) = false;
+                }
+            }
+        }
+        return matrix_new;
     }
 
     ///////////////////////////////////////////////////////////////////
