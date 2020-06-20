@@ -5,7 +5,7 @@
 #ifndef HW3_INTMATRIX_H
 #define HW3_INTMATRIX_H
 
-#include "Auxiliaries.h"
+#include "../Auxiliaries.h"
 
 namespace mtm {
     class IntMatrix {
@@ -19,7 +19,7 @@ namespace mtm {
         iterator end();
         const_iterator begin() const;
         const_iterator end() const;
-        explicit IntMatrix(const Dimensions& dimensions, int value = 0);
+        explicit IntMatrix(const Dimensions& dimensions = Dimensions(1,1), int value = 0);
         ~IntMatrix();
         IntMatrix& operator=(const IntMatrix& matrix);
         int height() const;
