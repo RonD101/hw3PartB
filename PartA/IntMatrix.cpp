@@ -19,7 +19,7 @@ IntMatrix::IntMatrix(const Dimensions& dimensions, int value):dim(dimensions)
     {
         for (int i = 0; i < dim_col; ++i)
         {
-            row[j][i] = value;
+            (*this)(j,i) = value;
         }
     }
 }
