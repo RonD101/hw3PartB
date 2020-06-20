@@ -26,7 +26,6 @@ namespace mtm {
         friend IntMatrix operator+(const IntMatrix& matrix1, const IntMatrix& matrix2);
         IntMatrix& operator+=(const int value);
         IntMatrix operator-() const ;
-        friend IntMatrix operator-(const IntMatrix& matrix1, const IntMatrix& matrix2);
         int& operator()(int row_num,int col_num);
         const int& operator()(int row_num,int col_num) const;
         friend std::ostream& operator<<(std::ostream& os, const IntMatrix& matrix);

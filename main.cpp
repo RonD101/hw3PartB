@@ -37,7 +37,6 @@ int main() {
         }
         cout << "\n";
     }
-
     cout << "\n\n";
 
     Matrix<int> m3(dim,2);
@@ -81,6 +80,26 @@ int main() {
         }
         cout << "\n";
     }
+    try {
+        Matrix<int>::Diagonal(-1,2);
+    }
+    catch (std::exception& e){
+        cout << e.what() << endl;
+    }
+    try {
+        Matrix<int>(Dimensions(1,2),3) + Matrix<int>(Dimensions(3,2),3);
+    }
+    catch (std::exception& e){
+        cout << e.what() << endl;
+    }
+    try {
+//        Matrix<int>(Dimensions(1,2),3) - Matrix<int>(Dimensions(3,2),3);
+    }
+    catch (std::exception& e){
+        cout << e.what() << endl;
+    }
+
+
 
 //    IntMatrix im(Dimensions(2,7),5);
 //    Matrix<IntMatrix> m2(Dimensions(3,4),im);

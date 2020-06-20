@@ -309,7 +309,7 @@ const int& IntMatrix::operator()(int row_num, int col_num) const {
 }
 
 IntMatrix mtm::operator-(const IntMatrix &matrix1, const IntMatrix &matrix2) {
-    return IntMatrix(matrix1 + -matrix2);
+    return matrix1 + -matrix2;
 }
 
 IntMatrix& IntMatrix::operator+=(const int value) {

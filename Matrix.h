@@ -35,7 +35,6 @@ namespace mtm {
         friend Matrix operator+(const Matrix& matrix1, const Matrix& matrix2);
         Matrix& operator+=(const int value);
         Matrix operator-() const ;
-        friend Matrix operator-(const Matrix& matrix1, const Matrix& matrix2);
         T& operator()(int row_num,int col_num);
         const T& operator()(int row_num,int col_num) const;
         friend std::ostream& operator<<(std::ostream& os, const Matrix& matrix);
@@ -154,17 +153,22 @@ namespace mtm {
         }
     }
 
-//    Matrix<class T> operator+(const Matrix<class T> &matrix1, const Matrix<class T> &matrix2) {
-//        Matrix<class T> matrix(matrix1.getDimensions());
-//        for (int i = 0; i < matrix.height(); ++i)
-//        {
-//            for (int j = 0; j < matrix.width(); ++j)
-//            {
-//                matrix(i,j) = matrix1(i,j) + matrix2(i,j);
-//            }
-//        }
-//        return matrix;
-//    }
+    template <class T>
+    Matrix<T> operator+(const Matrix<T> &matrix1, const Matrix<T> &matrix2) {
+        if(matrix1.getDimensions() != matrix2.getDimensions())
+        {
+            throw Matrix<T>::DimensionMismatch(matrix1.getDimensions(),matrix2.getDimensions());
+        }
+        Matrix<T> matrix(matrix1.getDimensions());
+        for (int i = 0; i < matrix.height(); ++i)
+        {
+            for (int j = 0; j < matrix.width(); ++j)
+            {
+                matrix(i,j) = matrix1(i,j) + matrix2(i,j);
+            }
+        }
+        return matrix;
+    }
 
 //     template<> Matrix<class T> Matrix<class T>::transpose() const {
 //        Dimensions d(this->width(),this->height());
@@ -217,10 +221,6 @@ namespace mtm {
         }
     }
 
-//    template<class T>
-//    Matrix<T>::~Matrix() {
-//
-//    }
 
     template<class T>
     Matrix<T>& Matrix<T>::operator=(const Matrix<T> &matrix) {
@@ -228,11 +228,7 @@ namespace mtm {
         {
             return *this;
         }
-//        for (int i = 0; i < this->height(); ++i)
-//        {
-//            delete[] row[i];
-//        }
-//        delete[] row;
+        //deallocate is working automatic because of the RAII design
         dim = matrix.dim;
         //allocating rows
         row = TemArray<TemArray<T>>(dim.getRow());
@@ -257,13 +253,20 @@ namespace mtm {
 //        return <#initializer#>;
 //    }
 //
-//    template<class T>
-//    Matrix Matrix<T>::operator-() const {
-//        return Matrix();
-//    }
-//
-//    Matrix operator-(const Matrix &matrix1, const Matrix &matrix2) {
-//        return Matrix();
+    template<class T>
+    Matrix<T> Matrix<T>::operator-() const {
+        Matrix<T> matrix(*this);
+        for (int i = 0; i < matrix.height(); ++i) {
+            for (int j = 0; j < matrix.width(); ++j) {
+                matrix(i,j) = -matrix(i,j);
+            }
+        }
+        return matrix;
+    }
+
+//    template <class T>
+//    Matrix<T> operator-(const Matrix<T>& matrix1, const Matrix<T>& matrix2) {
+//        return matrix1 + -matrix2;
 //    }
 
     template<class T>
@@ -489,6 +492,7 @@ namespace mtm {
             return out.c_str();
         }
     };
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 }
