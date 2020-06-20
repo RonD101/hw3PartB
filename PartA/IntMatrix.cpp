@@ -173,7 +173,7 @@ IntMatrix mtm::operator>(IntMatrix& matrix, int num)
 
 // Function to check which values in the matrix are equal or larger than the int passed
 // Returns new matrix with these rules:
-// Larger values become 1
+// Larger or equal values become 1
 // Smaller values become 0
 IntMatrix mtm::operator>=(IntMatrix& matrix, int num)
 {
