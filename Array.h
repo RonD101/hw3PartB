@@ -25,7 +25,7 @@ namespace mtm {
         T *data;
         int length;
     public:
-        explicit Array(int size);
+        explicit Array(int size = 10);
 
         Array(const Array<T> &a);
 
