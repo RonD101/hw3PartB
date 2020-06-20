@@ -98,6 +98,26 @@ namespace mtm {
         const_iterator(const const_iterator&) = default;
         const_iterator& operator=(const const_iterator&) = default;
     };
+
+    template<class T>
+    int Matrix<T>::height() const {
+        return dim.getRow();
+    }
+
+    template<class T>
+    int Matrix<T>::width() const {
+        return dim.getCol();
+    }
+
+    template<class T>
+    int Matrix<T>::size() const {
+        return this->width()*this->height();
+    }
+
+    template<class T>
+    Dimensions Matrix<T>::getDimensions() const {
+        return this->dim;
+    }
 }
 
 #endif //HW3PARTB_MATRIX_H
