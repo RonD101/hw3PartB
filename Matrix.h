@@ -28,7 +28,7 @@ namespace mtm {
         class const_iterator;
         const_iterator begin() const;
         const_iterator end() const;
-        explicit Matrix(const Dimensions& dimensions = Dimensions(1,1), int value = 0);
+        explicit Matrix(const Dimensions& dimensions = Dimensions(1,1), T value = T());
         Matrix(const Matrix& matrix);
         ~Matrix() = default; //because of the RAII design there isn't a need for a destructor
         Matrix& operator=(const Matrix& matrix);
@@ -36,10 +36,11 @@ namespace mtm {
         Matrix& operator+=(const int value);
         Matrix operator-() const ;
         friend Matrix operator-(const Matrix& matrix1, const Matrix& matrix2);
-        int& operator()(int row_num,int col_num);
-        const int& operator()(int row_num,int col_num) const;
+        T& operator()(int row_num,int col_num);
+        const T& operator()(int row_num,int col_num) const;
         friend std::ostream& operator<<(std::ostream& os, const Matrix& matrix);
         Matrix transpose() const ;
+        static Matrix Identity(int dim);
         static Matrix<T> Diagonal(int dim, T value);
         int height() const;
         int width() const;
@@ -130,7 +131,7 @@ namespace mtm {
     }
 
     template<class T>
-    Matrix<T>::Matrix(const Dimensions &dimensions, int value):dim(dimensions) {
+    Matrix<T>::Matrix(const Dimensions &dimensions, T value):dim(dimensions) {
         if(dimensions.getRow() < 1 || dimensions.getCol() <1)
         {
             throw Matrix<T>::IllegalInitialization();
@@ -199,8 +200,7 @@ namespace mtm {
 //    }
 
     template<class T>
-    Matrix<T>::Matrix(const Matrix<T> &matrix) {
-        dim = matrix.getDimensions();
+    Matrix<T>::Matrix(const Matrix<T> &matrix) :dim(matrix.getDimensions()) {
         //allocating rows
         row = TemArray<TemArray<T>>(dim.getRow());
         //allocating cols
@@ -220,6 +220,7 @@ namespace mtm {
 
 //    template<class T>
 //    Matrix<T>::~Matrix() {
+//
 //    }
 
     template<class T>
@@ -267,12 +268,14 @@ namespace mtm {
 //    }
 
     template<class T>
-    int &Matrix<T>::operator()(int row_num, int col_num) {
+    T& Matrix<T>::operator()(int row_num, int col_num)
+    {
         return row[row_num][col_num];
     }
 
     template<class T>
-    const int &Matrix<T>::operator()(int row_num, int col_num) const {
+    const T& Matrix<T>::operator()(int row_num, int col_num) const
+    {
         return row[row_num][col_num];
     }
 
@@ -313,7 +316,7 @@ namespace mtm {
     template<class T>
     Matrix<bool> operator<(Matrix<T>& matrix, T value)
     {
-        Matrix matrix_new(matrix);
+        Matrix<T> matrix_new(matrix);
         for (int j = 0; j < matrix_new.height(); ++j)
         {
             for (int i = 0; i < matrix_new.width(); ++i)
@@ -337,7 +340,7 @@ namespace mtm {
     template <class T>
     Matrix<T> operator<=(Matrix<T>& matrix, T value)
     {
-        Matrix matrix_new(matrix);
+        Matrix<T> matrix_new(matrix);
         for (int j = 0; j < matrix_new.height(); ++j)
         {
             for (int i = 0; i < matrix_new.width(); ++i)
@@ -361,7 +364,7 @@ namespace mtm {
     template <class T>
     Matrix<T> operator>(Matrix<T>& matrix, T value)
     {
-        Matrix matrix_new(matrix);
+        Matrix<T> matrix_new(matrix);
         for (int j = 0; j < matrix_new.height(); ++j)
         {
             for (int i = 0; i < matrix_new.width(); ++i)
@@ -385,7 +388,7 @@ namespace mtm {
     template <class T>
     Matrix<T> operator>=(Matrix<T>& matrix, T value)
     {
-        Matrix matrix_new(matrix);
+        Matrix<T> matrix_new(matrix);
         for (int j = 0; j < matrix_new.height(); ++j)
         {
             for (int i = 0; i < matrix_new.width(); ++i)
@@ -409,7 +412,7 @@ namespace mtm {
     template <class T>
     Matrix<T> operator==(Matrix<T>& matrix, T value)
     {
-        Matrix matrix_new(matrix);
+        Matrix<T> matrix_new(matrix);
         for (int j = 0; j < matrix_new.height(); ++j)
         {
             for (int i = 0; i < matrix_new.width(); ++i)
@@ -433,7 +436,7 @@ namespace mtm {
     template <class T>
     Matrix<T> operator!=(Matrix<T>& matrix, T value)
     {
-        Matrix matrix_new(matrix);
+        Matrix<T> matrix_new(matrix);
         for (int j = 0; j < matrix_new.height(); ++j)
         {
             for (int i = 0; i < matrix_new.width(); ++i)
