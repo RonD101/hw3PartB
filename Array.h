@@ -6,8 +6,8 @@
 #define HW3PARTB_ARRAY_H
 
 #include <iostream>
-
-
+#include "Auxiliaries.h"
+#include <string>
 
 namespace mtm {
     template<class T>

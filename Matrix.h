@@ -11,12 +11,17 @@ using std::cout;
 using std::endl;
 
 namespace mtm {
+
+
     template<class T>
     class Matrix {
         Array<Array<T>> row;
         Dimensions dim;
         Dimensions getDimensions() const;
     public:
+        class AccessIllegalElement;
+        class IllegalInitialization;
+        class DimensionMismatch;
         class iterator;
         iterator begin();
         iterator end();
@@ -35,6 +40,7 @@ namespace mtm {
         const int& operator()(int row_num,int col_num) const;
         friend std::ostream& operator<<(std::ostream& os, const Matrix& matrix);
         Matrix transpose() const ;
+        static Matrix Identity(int dim);
         int height() const;
         int width() const;
         int size() const;
@@ -234,6 +240,39 @@ namespace mtm {
 //    std::ostream &operator<<(std::ostream &os, const Matrix &matrix) {
 //        return <#initializer#>;
 //    }
+
+    ///////////////////////////////////////////////////////
+    ////////////// Exception classes //////////////////////
+    ///////////////////////////////////////////////////////
+    template <class T>
+    class Matrix<T>::AccessIllegalElement  : public std::exception {
+    public:
+        const char* what() const noexcept override
+        {
+            return "Mtm matrix error: An attempt to access an illegal element";
+        }
+    };
+    template <class T>
+    class Matrix<T>::IllegalInitialization  : public std::exception {
+    public:
+        const char* what() const noexcept override
+        {
+            return "Mtm matrix error: Illegal initialization values";
+        }
+    };
+    template <class T>
+    class Matrix<T>::DimensionMismatch  : public std::exception {
+        Dimensions m1;
+        Dimensions m2;
+        std::string out;
+    public:
+        DimensionMismatch(Dimensions m1, Dimensions m2):m1(m1),m2(m2),out("Mtm matrix error: Dimension mismatch: " + m1.toString() + " " + m2.toString()) {}
+        const char* what() const noexcept override
+        {
+            return out.c_str();
+        }
+    };
+    ////////////////////////////////////////////////////////////////////////////////////////
 }
 
 #endif //HW3PARTB_MATRIX_H
