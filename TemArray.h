@@ -2,8 +2,8 @@
 // Created by Ron Dahan on 20/06/2020.
 //
 
-#ifndef HW3PARTB_ARRAY_H
-#define HW3PARTB_ARRAY_H
+#ifndef HW3PARTB_TEMARRAY_H
+#define HW3PARTB_TEMARRAY_H
 
 #include <iostream>
 #include "Auxiliaries.h"
@@ -11,18 +11,18 @@
 
 namespace mtm {
     template<class T>
-    class Array {
+    class TemArray {
         T *data;
         int length;
     public:
         class BadAccess;
-        explicit Array(int size = 10);
+        explicit TemArray(int size = 10);
 
-        Array(const Array<T> &a);
+        TemArray(const TemArray<T> &a);
 
-        ~Array();
+        ~TemArray();
 
-        Array &operator=(const Array<T> &a);
+        TemArray &operator=(const TemArray<T> &a);
 
         int size() const;
 
@@ -32,13 +32,13 @@ namespace mtm {
     };
 
     template<class T>
-    Array<T>::Array(int size) {
+    TemArray<T>::TemArray(int size) {
         data = new T[size];
         length = size;
     }
 
     template<class T>
-    Array<T>::Array(const Array<T> &a) {
+    TemArray<T>::TemArray(const TemArray<T> &a) {
         data = new T[a.size()];
         length = a.size();
         for (int i = 0; i < a.size(); ++i) {
@@ -47,14 +47,14 @@ namespace mtm {
     }
 
     template<class T>
-    Array<T>::~Array() {
+    TemArray<T>::~TemArray() {
         delete[] data;
     }
 
     template<class T>
-    Array<T> &Array<T>::operator=(const Array<T> &a) {
+    TemArray<T>& TemArray<T>::operator=(const TemArray<T> &a) {
         if (this == &a) {
-            return this;
+            return *this;
         }
         T *temp_array = new T[a.size()];
         delete[] data;
@@ -73,28 +73,28 @@ namespace mtm {
     }
 
     template<class T>
-    int Array<T>::size() const {
+    int TemArray<T>::size() const {
         return length;
     }
 
     template<class T>
-    T &Array<T>::operator[](int index) {
+    T &TemArray<T>::operator[](int index) {
         if (index < 0 || index >= this->size()) {
-            throw Array::BadAccess();
+            throw TemArray::BadAccess();
         }
         return data[index];
     }
 
     template<class T>
-    const T &Array<T>::operator[](int index) const {
+    const T &TemArray<T>::operator[](int index) const {
         if (index < 0 || index >= this->size()) {
-            throw Array::BadAccess();
+            throw TemArray::BadAccess();
         }
         return data[index];
     }
 
     template <class T>
-    class Array<T>::BadAccess : public std::exception {
+    class TemArray<T>::BadAccess : public std::exception {
     public:
         const char* what() const noexcept override
         {
@@ -103,4 +103,4 @@ namespace mtm {
     };
 }
 
-#endif //HW3PARTB_ARRAY_H
+#endif //HW3PARTB_TEMARRAY_H

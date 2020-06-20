@@ -5,7 +5,7 @@
 #ifndef HW3PARTB_MATRIX_H
 #define HW3PARTB_MATRIX_H
 
-#include "Array.h"
+#include "TemArray.h"
 #include "Auxiliaries.h"
 using std::cout;
 using std::endl;
@@ -15,7 +15,7 @@ namespace mtm {
 
     template<class T>
     class Matrix {
-        Array<Array<T>> row;
+        TemArray<TemArray<T>> row;
         Dimensions dim;
         Dimensions getDimensions() const;
     public:
@@ -30,7 +30,7 @@ namespace mtm {
         const_iterator end() const;
         explicit Matrix(const Dimensions& dimensions = Dimensions(1,1), int value = 0);
         Matrix(const Matrix& matrix);
-        ~Matrix();
+        ~Matrix() = default; //because of the RAII design there isn't a need for a destructor
         Matrix& operator=(const Matrix& matrix);
         friend Matrix operator+(const Matrix& matrix1, const Matrix& matrix2);
         Matrix& operator+=(const int value);
@@ -129,30 +129,30 @@ namespace mtm {
         return this->dim;
     }
 
-//    template<class T>
-//    Matrix<T>::Matrix(const Dimensions &dimensions, int value) {
-//        try {
-//            int dim_row = dimensions.getRow();
-//            int dim_col = dimensions.getCol();
-//        } catch (const mtm::Matrix<int>::IllegalInitialization &e){
-//            cout<<e.what()<<endl;
-//        }
-//        //allocating rows
-//        row = new int *[dim_row];
-//        //allocating cols
-//        for (int i = 0; i < dim_row; ++i)
-//        {
-//            row[i] = new int[dim_col];
-//        }
-//        //setting default value
-//        for (int j = 0; j < dim_row; ++j)
-//        {
-//            for (int i = 0; i < dim_col; ++i)
-//            {
-//                (*this)(j,i) = value;
-//            }
-//        }
-//    }
+    template<class T>
+    Matrix<T>::Matrix(const Dimensions &dimensions, int value):dim(dimensions) {
+        if(dimensions.getRow() < 1 || dimensions.getCol() <1)
+        {
+            throw Matrix<T>::IllegalInitialization();
+        }
+        int dim_row = dimensions.getRow();
+        int dim_col = dimensions.getCol();
+        //allocating rows
+        row = TemArray<TemArray<T>>(dim_row);
+        //allocating cols
+        for (int i = 0; i < dim_row; ++i)
+        {
+            row[i] = TemArray<T>(dim_col);
+        }
+        //setting default value
+        for (int i = 0; i < dim_row; ++i)
+        {
+            for (int j = 0; j < dim_col; ++j)
+            {
+                (*this)(i,j) = value;
+            }
+        }
+    }
 
 //    Matrix<class T> operator+(const Matrix<class T> &matrix1, const Matrix<class T> &matrix2) {
 //        Matrix<class T> matrix(matrix1.getDimensions());
@@ -197,22 +197,62 @@ namespace mtm {
 //    Matrix::const_iterator Matrix<T>::end() const {
 //        return Matrix::const_iterator();
 //    }
-//
-//    template<class T>
-//    Matrix<T>::Matrix(const Matrix &matrix) {
-//
-//    }
-//
+
+    template<class T>
+    Matrix<T>::Matrix(const Matrix<T> &matrix) {
+        dim = matrix.getDimensions();
+        //allocating rows
+        row = TemArray<TemArray<T>>(dim.getRow());
+        //allocating cols
+        for (int i = 0; i < dim.getRow(); ++i)
+        {
+            row[i] = TemArray<T>(dim.getCol());
+        }
+        //setting default value
+        for (int i = 0; i < dim.getRow(); ++i)
+        {
+            for (int j = 0; j < dim.getCol(); ++j)
+            {
+                (*this)(i,j) = matrix(i,j);
+            }
+        }
+    }
+
 //    template<class T>
 //    Matrix<T>::~Matrix() {
 //
 //    }
-//
-//    template<class T>
-//    Matrix &Matrix<T>::operator=(const Matrix &matrix) {
-//        return <#initializer#>;
-//    }
-//
+
+    template<class T>
+    Matrix<T>& Matrix<T>::operator=(const Matrix<T> &matrix) {
+        if(this == & matrix)
+        {
+            return *this;
+        }
+//        for (int i = 0; i < this->height(); ++i)
+//        {
+//            delete[] row[i];
+//        }
+//        delete[] row;
+        dim = matrix.dim;
+        //allocating rows
+        row = TemArray<TemArray<T>>(dim.getRow());
+        //allocating cols
+        for (int i = 0; i < this->height(); ++i)
+        {
+            row[i] = TemArray<T>(dim.getCol());
+        }
+        //setting new values
+        for (int j = 0; j < this->height(); ++j)
+        {
+            for (int i = 0; i < this->width(); ++i)
+            {
+                (*this)(j,i) = matrix(j,i);
+            }
+        }
+        return *this;
+    }
+
 //    template<class T>
 //    Matrix &Matrix<T>::operator+=(const int value) {
 //        return <#initializer#>;
@@ -226,24 +266,35 @@ namespace mtm {
 //    Matrix operator-(const Matrix &matrix1, const Matrix &matrix2) {
 //        return Matrix();
 //    }
-//
-//    template<class T>
-//    int &Matrix<T>::operator()(int row_num, int col_num) {
-//        return <#initializer#>;
-//    }
-//
-//    template<class T>
-//    const int &Matrix<T>::operator()(int row_num, int col_num) const {
-//        return <#initializer#>;
-//    }
-//
-//    std::ostream &operator<<(std::ostream &os, const Matrix &matrix) {
-//        return <#initializer#>;
-//    }
 
-    ///////////////////////////////////////////////////////
-    ////////////// Exception classes //////////////////////
-    ///////////////////////////////////////////////////////
+    template<class T>
+    int &Matrix<T>::operator()(int row_num, int col_num) {
+        return row[row_num][col_num];
+    }
+
+    template<class T>
+    const int &Matrix<T>::operator()(int row_num, int col_num) const {
+        return row[row_num][col_num];
+    }
+
+    template <class T>
+    std::ostream &operator<<(std::ostream &os, const Matrix<T> &matrix) {
+        int* flatMatrix = new int[matrix.size()];
+        int counter = 0;
+        Dimensions dims(matrix.height(), matrix.width());
+        for (int i = 0; i < matrix.height(); ++i) {
+            for (int j = 0; j < matrix.width(); ++j) {
+                flatMatrix[counter++] = matrix(i,j);
+            }
+        }
+        os << (printMatrix(flatMatrix, dims));
+        delete[] flatMatrix;
+        return os;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////////////////////////// Exception classes //////////////////////
+    ///////////////////////////////////////////////////////////////////
     template <class T>
     class Matrix<T>::AccessIllegalElement  : public std::exception {
     public:
@@ -272,7 +323,8 @@ namespace mtm {
             return out.c_str();
         }
     };
-    ////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
 #endif //HW3PARTB_MATRIX_H
