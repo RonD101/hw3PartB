@@ -23,12 +23,10 @@ namespace mtm {
         IntMatrix(const IntMatrix& matrix);
         ~IntMatrix();
         IntMatrix& operator=(const IntMatrix& matrix);
-        friend IntMatrix operator+(const IntMatrix& matrix1, const IntMatrix& matrix2);
         IntMatrix& operator+=(const int value);
         IntMatrix operator-() const ;
         int& operator()(int row_num,int col_num);
         const int& operator()(int row_num,int col_num) const;
-        friend std::ostream& operator<<(std::ostream& os, const IntMatrix& matrix);
         IntMatrix transpose() const ;
         static IntMatrix Identity(int dim);
         int height() const;

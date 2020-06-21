@@ -1,5 +1,4 @@
 #include <iostream>
-#include "PartA/IntMatrix.h"
 #include "Matrix.h"
 using std::cout;
 using std::endl;
@@ -81,6 +80,12 @@ int main() {
         cout << "\n";
     }
     try {
+        cout << mf(-2,3) << endl;
+    }catch (std::exception& e){
+        cout << e.what() << endl;
+    }
+
+    try {
         Matrix<int>::Diagonal(-1,2);
     }
     catch (std::exception& e){
@@ -93,7 +98,7 @@ int main() {
         cout << e.what() << endl;
     }
     try {
-//        Matrix<int>(Dimensions(1,2),3) - Matrix<int>(Dimensions(3,2),3);
+        Matrix<int>(Dimensions(1,2),3) - Matrix<int>(Dimensions(3,2),3);
     }
     catch (std::exception& e){
         cout << e.what() << endl;

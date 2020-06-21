@@ -258,7 +258,8 @@ IntMatrix IntMatrix::transpose() const
 // Function returns new matrix which is the sum of the 2 matrices passed
 IntMatrix mtm::operator+(const IntMatrix &matrix1, const IntMatrix &matrix2)
 {
-    IntMatrix matrix(matrix1.getDimensions());
+
+    IntMatrix matrix(Dimensions(matrix1.height(),matrix1.width()));
     for (int i = 0; i < matrix.height(); ++i)
     {
         for (int j = 0; j < matrix.width(); ++j)

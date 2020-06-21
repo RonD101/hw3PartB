@@ -11,8 +11,6 @@ using std::cout;
 using std::endl;
 
 namespace mtm {
-
-
     template<class T>
     class Matrix {
         TemArray<TemArray<T>> row;
@@ -30,9 +28,8 @@ namespace mtm {
         const_iterator end() const;
         explicit Matrix(const Dimensions& dimensions = Dimensions(1,1), T value = T());
         Matrix(const Matrix& matrix);
-        ~Matrix() = default; //because of the RAII design there isn't a need for a destructor
+        ~Matrix() = default; //because of the RAII design there isn't a need for a special destructor
         Matrix& operator=(const Matrix& matrix);
-        template<class T> friend Matrix<T> operator+(const Matrix<T>& matrix1, const Matrix<T>& matrix2);
         Matrix& operator+=(const int value);
         Matrix operator-() const ;
         T& operator()(int row_num,int col_num);
@@ -153,8 +150,23 @@ namespace mtm {
         }
     }
 
-    template <class T>
-    Matrix<T> operator+(const Matrix<T> &matrix1, const Matrix<T> &matrix2);
+    template<class T>
+    Matrix<T> operator+(const Matrix<T> &matrix1, const Matrix<T> &matrix2) {
+        Dimensions d1(matrix1.height(),matrix1.width()), d2(matrix2.height(),matrix2.width());
+        if(d1 != d2)
+        {
+            throw typename Matrix<T>::DimensionMismatch(d1,d2);
+        }
+        Matrix<T> matrix(d1);
+        for (int i = 0; i < matrix.height(); ++i)
+        {
+            for (int j = 0; j < matrix.width(); ++j)
+            {
+                matrix(i,j) = matrix1(i,j) + matrix2(i,j);
+            }
+        }
+        return matrix;
+    }
 
 //     template<> Matrix<class T> Matrix<class T>::transpose() const {
 //        Dimensions d(this->width(),this->height());
@@ -250,21 +262,29 @@ namespace mtm {
         return matrix;
     }
 
-//    template <class T>
-//    Matrix<T> operator-(const Matrix<T>& matrix1, const Matrix<T>& matrix2) {
-//        return matrix1 + -matrix2;
-//    }
+    template <class T>
+    Matrix<T> operator-(const Matrix<T>& matrix1, const Matrix<T>& matrix2) {
+        return matrix1 + -matrix2;
+    }
 
     template<class T>
     T& Matrix<T>::operator()(int row_num, int col_num)
     {
-        return row[row_num][col_num];
+        try {
+            return row[row_num][col_num];
+        }catch (std::exception& e){
+            throw Matrix<T>::AccessIllegalElement();
+        }
     }
 
     template<class T>
     const T& Matrix<T>::operator()(int row_num, int col_num) const
     {
-        return row[row_num][col_num];
+        try {
+            return row[row_num][col_num];
+        }catch (std::exception& e){
+            throw Matrix<T>::AccessIllegalElement();
+        }
     }
 
     template <class T>
@@ -447,23 +467,6 @@ namespace mtm {
         return matrix_new;
     }
 
-    template<class T>
-    Matrix<T> operator+(const Matrix<T> &matrix1, const Matrix<T> &matrix2) {
-        if(matrix1.getDimensions() != matrix2.getDimensions())
-        {
-            throw Matrix<T>::DimensionMismatch(matrix1.getDimensions(),matrix2.getDimensions());
-        }
-        Matrix<T> matrix(matrix1.getDimensions());
-        for (int i = 0; i < matrix.height(); ++i)
-        {
-            for (int j = 0; j < matrix.width(); ++j)
-            {
-                matrix(i,j) = matrix1(i,j) + matrix2(i,j);
-            }
-        }
-        return matrix;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////////////////////////// Exception classes //////////////////////
     ///////////////////////////////////////////////////////////////////
@@ -495,8 +498,6 @@ namespace mtm {
             return out.c_str();
         }
     };
-
-
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////
