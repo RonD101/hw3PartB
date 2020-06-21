@@ -7,8 +7,6 @@
 
 #include "TemArray.h"
 #include "PartA/Auxiliaries.h"
-using std::cout;
-using std::endl;
 
 namespace mtm {
     template<class T>
