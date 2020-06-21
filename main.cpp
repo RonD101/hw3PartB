@@ -104,6 +104,20 @@ int main() {
         cout << e.what() << endl;
     }
 
+    Dimensions dim2(3,5);
+    Matrix<char> m8(dim);
+    char counter = 'a';
+    for (Matrix<char>::iterator it = m8.begin(); it != m8.end(); ++it) {
+        *it = counter++;
+    }
+    for (Matrix<char>::iterator it = m8.begin(); it != m8.end(); ++it) {
+        cout << *it << endl;
+    }
+    const Matrix<char> m8c(m8);
+    for (Matrix<char>::const_iterator it = m8c.begin(); it != m8c.end(); ++it) {
+        cout << *it << endl;
+    }
+
     cout << "\n\n";
     Dimensions d(3, 6);
     Matrix<int> m7(d, 3);

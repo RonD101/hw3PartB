@@ -21,11 +21,24 @@ namespace mtm {
         class IllegalInitialization;
         class DimensionMismatch;
         class iterator;
-        iterator begin();
-        iterator end();
+        iterator begin()
+        {
+            return iterator(this,1);
+        }
+        iterator end()
+        {
+            return iterator(this,this->size() + 1);
+        }
         class const_iterator;
-        const_iterator begin() const;
-        const_iterator end() const;
+        const_iterator begin() const
+        {
+            return const_iterator(this,1);
+        }
+        const_iterator end() const
+        {
+            return const_iterator(this,this->size() + 1);
+
+        }
         explicit Matrix(const Dimensions& dimensions = Dimensions(1,1), T value = T());
         Matrix(const Matrix& matrix);
         ~Matrix() = default; //because of the RAII design there isn't a need for a special destructor
@@ -34,7 +47,6 @@ namespace mtm {
         Matrix operator-() const ;
         T& operator()(int row_num,int col_num);
         const T& operator()(int row_num,int col_num) const;
-        friend std::ostream& operator<<(std::ostream& os, const Matrix& matrix);
         Matrix transpose() const ;
         static Matrix<T> Diagonal(int dim, T value);
         int height() const;
@@ -69,37 +81,107 @@ namespace mtm {
     template <class T>
     bool all(const Matrix<T>& matrix);
 
+    /////////////////////////////////////////////////////////////////////
+    ///////////////////////-----Iterator-----////////////////////////////
+    /////////////////////////////////////////////////////////////////////
     template <class T>
     class Matrix<T>::iterator{
-        Matrix* matrix;
+        Matrix<T>* matrix;
         int index;
-        friend class IntMatrix;
-        iterator(Matrix* matrix, int index);
+        friend class Matrix<T>;
+        iterator(Matrix* matrix, int index):matrix(matrix),index(index) {}
     public:
-        int& operator*();
-        iterator& operator++(); // prefix (++it)
-        iterator operator++(int);
-        bool operator==(const iterator& it) const;
-        bool operator!=(const iterator& it) const;
+        T& operator*();
+        iterator& operator++() // prefix (++it)
+        {
+            index++;
+            return *this;
+        }
+        iterator operator++(int)
+        {
+            iterator result = *this;
+            ++(*this);
+            return result;
+        }
+        bool operator==(const iterator& it) const
+        {
+            return this->index == it.index;
+        }
+        bool operator!=(const iterator& it) const
+        {
+            return this->index != it.index;
+        }
         iterator(const iterator&) = default;
         iterator& operator=(const iterator&) = default;
     };
 
+    template<class T>
+    T& Matrix<T>::iterator::operator*() {
+        int col_index = index % matrix->width();
+        if(col_index == 0){
+            col_index = matrix->width();
+        }
+        int row_index;
+        if(index % matrix->width() == 0)
+        {
+            row_index = index/matrix->width();
+        } else
+        {
+            row_index = (index/matrix->width() )+ 1;
+        }
+        return (*matrix)(row_index - 1, col_index - 1);
+    }
+
+    /////////////////////////////////////////////////////////////////////
+    /////////////////////-----const Iterator-----////////////////////////
+    /////////////////////////////////////////////////////////////////////
     template <class T>
     class Matrix<T>::const_iterator{
         const Matrix* matrix;
         int index;
-        friend class IntMatrix;
-        const_iterator(const Matrix* matrix, int index);
+        friend class Matrix;
+        const_iterator(const Matrix* matrix, int index):matrix(matrix),index(index) {}
     public:
-        const int& operator*() const;
-        const_iterator& operator++(); // prefix (++it)
-        const_iterator operator++(int);
-        bool operator==(const const_iterator& it) const;
-        bool operator!=(const const_iterator& it) const;
+        const T& operator*() const;
+        const_iterator& operator++() // prefix (++it)
+        {
+            index++;
+            return *this;
+        }
+        const_iterator operator++(int)
+        {
+            iterator result = *this;
+            ++(*this);
+            return result;
+        }
+        bool operator==(const const_iterator& it) const
+        {
+            return this->index == it.index;
+        }
+        bool operator!=(const const_iterator& it) const
+        {
+            return this->index != it.index;
+        }
         const_iterator(const const_iterator&) = default;
         const_iterator& operator=(const const_iterator&) = default;
     };
+
+    template<class T>
+    const T& Matrix<T>::const_iterator::operator*() const {
+        int col_index = index % matrix->width();
+        if(col_index == 0){
+            col_index = matrix->width();
+        }
+        int row_index;
+        if(index % matrix->width() == 0)
+        {
+            row_index = index/matrix->width();
+        } else
+        {
+            row_index = (index/matrix->width() )+ 1;
+        }
+        return (*matrix)(row_index - 1, col_index - 1);
+    }
 
     // Function to get number of rows of the matrix
     template<class T>
@@ -248,7 +330,9 @@ namespace mtm {
     {
         try {
             return row[row_num][col_num];
-        }catch (std::exception& e){
+        }
+        //we catch if there is illegal access in TemArray and rethrow it as Martix::AccessIllegalElement
+        catch (std::exception& e){
             throw Matrix<T>::AccessIllegalElement();
         }
     }
@@ -258,7 +342,9 @@ namespace mtm {
     {
         try {
             return row[row_num][col_num];
-        }catch (std::exception& e){
+        }
+        //we catch if there is illegal access in TemArray and rethrow it as Martix::AccessIllegalElement
+        catch (std::exception& e){
             throw Matrix<T>::AccessIllegalElement();
         }
     }
