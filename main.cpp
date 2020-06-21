@@ -104,7 +104,29 @@ int main() {
         cout << e.what() << endl;
     }
 
+    cout << "\n\n";
+    Dimensions d(3, 6);
+    Matrix<int> m7(d, 3);
+    Matrix<int> mTranspose = m7.transpose();
+    for (int i = 0; i < mTranspose.height(); ++i) {
+        for (int j = 0; j < mTranspose.width(); ++j) {
+            cout << mTranspose(i,j) << " ";
+        }
+        cout << "\n";
+    }
 
+    Matrix<int> m9(d, 1);
+    cout << all(m9) << endl;
+
+    Matrix<int> m10(d, 0);
+    cout << any(m10) << endl;
+
+    Matrix<int> m11(d, 0);
+    m11(1,1) = 1;
+    cout << any(m11) << endl;
+
+    Matrix<char> m12(d, 'a');
+    cout << all(m12) << endl;
 
 //    IntMatrix im(Dimensions(2,7),5);
 //    Matrix<IntMatrix> m2(Dimensions(3,4),im);

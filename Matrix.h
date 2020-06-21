@@ -69,6 +69,7 @@ namespace mtm {
     bool any(const Matrix<T>& matrix);
     template <class T>
     bool all(const Matrix<T>& matrix);
+//    Matrix<T> operator+(const Matrix<T>& matrix1, const Matrix<T>& matrix2);
 
     template <class T>
     class Matrix<T>::iterator{
@@ -167,19 +168,19 @@ namespace mtm {
         }
         return matrix;
     }
-
-//     template<> Matrix<class T> Matrix<class T>::transpose() const {
-//        Dimensions d(this->width(),this->height());
-//        Matrix matrix(d);
-//        for (int j = 0; j < matrix.height(); ++j)
-//        {
-//            for (int i = 0; i < matrix.width(); ++i)
-//            {
-//                matrix(j,i) = (*this)(i,j);
-//            }
-//        }
-//        return matrix;
-//    }
+    template <class T>
+    Matrix<T> Matrix<T>::transpose() const {
+        Dimensions d(this->width(),this->height());
+        Matrix matrix(d);
+        for (int j = 0; j < matrix.height(); ++j)
+        {
+            for (int i = 0; i < matrix.width(); ++i)
+            {
+                matrix(j,i) = (*this)(i,j);
+            }
+        }
+        return matrix;
+    }
 
 //    template<class T>
 //    Matrix::iterator Matrix<T>::begin() {
@@ -465,6 +466,38 @@ namespace mtm {
             }
         }
         return matrix_new;
+    }
+
+    template <class T>
+    bool any(const Matrix<T>& matrix)
+    {
+        for (int i = 0; i <matrix.height(); ++i)
+        {
+            for (int j = 0; j < matrix.width(); ++j)
+            {
+                if(matrix(i,j) != 0)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    template <class T>
+    bool all(const Matrix<T>& matrix)
+    {
+        for (int i = 0; i < matrix.height(); ++i)
+        {
+            for (int j = 0; j < matrix.width(); ++j)
+            {
+                if(matrix(i,j) == 0)
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     ///////////////////////////////////////////////////////////////////
