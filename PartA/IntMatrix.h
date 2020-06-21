@@ -19,7 +19,7 @@ namespace mtm {
         class const_iterator;
         const_iterator begin() const;
         const_iterator end() const;
-        explicit IntMatrix(const Dimensions& dimensions = Dimensions(1,1), int value = 0);
+        explicit IntMatrix(const Dimensions& dimensions, int value = 0);
         IntMatrix(const IntMatrix& matrix);
         ~IntMatrix();
         IntMatrix& operator=(const IntMatrix& matrix);

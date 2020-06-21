@@ -39,7 +39,7 @@ namespace mtm {
             return const_iterator(this,this->size() + 1);
 
         }
-        explicit Matrix(const Dimensions& dimensions = Dimensions(1,1), T value = T());
+        explicit Matrix(const Dimensions& dimensions, T value = T());
         Matrix(const Matrix& matrix);
         ~Matrix() = default; //because of the RAII design there isn't a need for a special destructor
         Matrix transpose() const ;
