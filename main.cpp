@@ -140,7 +140,18 @@ int main() {
     cout << any(m11) << endl;
 
     Matrix<char> m12(d, 'a');
-    cout << all(m12) << endl;
+    cout << all(m12) << endl; cout << "\n";
+
+    Matrix<int> m13(d, 1);
+    m13 += 3;
+    cout << m13 << endl << "\n";
+
+//    Matrix<int> m14(d, 3);
+//    m13 = m14 + -2;
+//    cout << m13 << endl << "\n";
+
+//    m13 = 2 + m14;
+//    cout << m13 << endl << "\n";
 
 //    IntMatrix im(Dimensions(2,7),5);
 //    Matrix<IntMatrix> m2(Dimensions(3,4),im);

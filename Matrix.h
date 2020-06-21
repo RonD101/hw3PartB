@@ -43,7 +43,7 @@ namespace mtm {
         Matrix(const Matrix& matrix);
         ~Matrix() = default; //because of the RAII design there isn't a need for a special destructor
         Matrix& operator=(const Matrix& matrix);
-        Matrix& operator+=(const int value);
+        Matrix& operator+=(const T value);
         Matrix operator-() const ;
         T& operator()(int row_num,int col_num);
         const T& operator()(int row_num,int col_num) const;
@@ -59,9 +59,9 @@ namespace mtm {
     template <class T>
     Matrix<T> operator+(const Matrix<T>& matrix1, const Matrix<T>& matrix2);
     template <class T>
-    Matrix<T> operator+(const Matrix<T>& matrix, const int value);
+    Matrix<T> operator+(const Matrix<T>& matrix, const T value);
     template <class T>
-    Matrix<T> operator+(const int value, const Matrix<T>& matrix);
+    Matrix<T> operator+(const T value, const Matrix<T>& matrix);
     template <class T>
     Matrix<T> operator-(const Matrix<T>& matrix1, const Matrix<T>& matrix2);
     template <class T>
@@ -324,6 +324,26 @@ namespace mtm {
     Matrix<T> operator-(const Matrix<T>& matrix1, const Matrix<T>& matrix2) {
         return matrix1 + -matrix2;
     }
+
+    template<class T>
+    Matrix<T> &Matrix<T>::operator+=(const T value) {
+        Matrix m(this->getDimensions(), value);
+        *this = *this + m;
+        return *this;
+    }
+
+//    template <class T>
+//    Matrix<T> operator+(const Matrix<T>& matrix, const T value)
+//    {
+//        Matrix m(matrix);
+//        m += value;
+//        return m;
+//    }
+//    template <class T>
+//    Matrix<T> operator+(const T value, const Matrix<T>& matrix)
+//    {
+//        return matrix + value;
+//    }
 
     template<class T>
     T& Matrix<T>::operator()(int row_num, int col_num)
@@ -599,6 +619,8 @@ namespace mtm {
             return out.c_str();
         }
     };
+
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////
