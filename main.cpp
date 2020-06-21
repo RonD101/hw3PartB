@@ -153,6 +153,24 @@ int main() {
 //    m13 = 2 + m14;
 //    cout << m13 << endl << "\n";
 
+    cout << mTranspose << endl;
+
+    try {
+        cout << *mTranspose.end() << endl;
+    }catch (std::exception& e){
+        cout << e.what() << endl;
+    }
+    Matrix<char>::iterator it8 = m8.begin();
+    for (int i = 0; i < m8.size() + 5; ++i) {
+        it8++;
+    }
+
+    try {
+        cout << *it8 << endl;
+    }catch (std::exception& e){
+        cout << e.what() << endl;
+    }
+
 //    IntMatrix im(Dimensions(2,7),5);
 //    Matrix<IntMatrix> m2(Dimensions(3,4),im);
 //    Matrix<IntMatrix> m3 = m2;
