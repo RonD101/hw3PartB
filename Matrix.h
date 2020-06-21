@@ -44,7 +44,6 @@ namespace mtm {
 
     template <class T>
     std::ostream& operator<<(std::ostream& os, const Matrix<T>& matrix);
-
     template <class T>
     Matrix<T> operator+(const Matrix<T>& matrix1, const Matrix<T>& matrix2);
     template <class T>
@@ -69,7 +68,6 @@ namespace mtm {
     bool any(const Matrix<T>& matrix);
     template <class T>
     bool all(const Matrix<T>& matrix);
-//    Matrix<T> operator+(const Matrix<T>& matrix1, const Matrix<T>& matrix2);
 
     template <class T>
     class Matrix<T>::iterator{
@@ -168,9 +166,11 @@ namespace mtm {
         }
         return matrix;
     }
+
+    // Function returns a transposed matrix
     template <class T>
     Matrix<T> Matrix<T>::transpose() const {
-        Dimensions d(this->width(),this->height());
+        Dimensions d(this->width(), this->height());
         Matrix matrix(d);
         for (int j = 0; j < matrix.height(); ++j)
         {
@@ -181,25 +181,6 @@ namespace mtm {
         }
         return matrix;
     }
-
-//    template<class T>
-//    Matrix::iterator Matrix<T>::begin() {
-//        return Matrix::iterator();
-//    }
-//
-//    template<class T>
-//    Matrix::iterator Matrix<T>::end() {
-//        return Matrix::iterator();
-//    }
-//
-//    template<class T>
-//    Matrix::const_iterator Matrix<T>::begin() const {
-//        return Matrix::const_iterator();
-//    }
-//    template<class T>
-//    Matrix::const_iterator Matrix<T>::end() const {
-//        return Matrix::const_iterator();
-//    }
 
     template<class T>
     Matrix<T>::Matrix(const Matrix<T> &matrix) :dim(matrix.getDimensions()) {
@@ -219,7 +200,6 @@ namespace mtm {
             }
         }
     }
-
 
     template<class T>
     Matrix<T>& Matrix<T>::operator=(const Matrix<T> &matrix) {
@@ -247,11 +227,6 @@ namespace mtm {
         return *this;
     }
 
-//    template<class T>
-//    Matrix &Matrix<T>::operator+=(const int value) {
-//        return <#initializer#>;
-//    }
-//
     template<class T>
     Matrix<T> Matrix<T>::operator-() const {
         Matrix<T> matrix(*this);
@@ -308,6 +283,7 @@ namespace mtm {
     Matrix<T> Matrix<T>::Diagonal(int dim, T value) {
         if(dim < 1)
         {
+            //If one of the matrix's dimensions isn't positive, throw an exception
             throw Matrix<T>::IllegalInitialization();
         }
         Dimensions d(dim,dim);
@@ -318,7 +294,7 @@ namespace mtm {
         return matrix;
     }
 
-    // Function to check which values in the matrix are smaller than the value passed
+    // Function to check which elements in the matrix are smaller than the value passed
     // Returns new matrix with these rules:
     // Smaller values become true
     // Larger values become false
@@ -343,7 +319,7 @@ namespace mtm {
         return matrix_new;
     }
 
-    // Function to check which values in the matrix are equal or smaller than the value passed
+    // Function to check which elements in the matrix are equal or smaller than the value passed
     // Returns new matrix with these rules:
     // Smaller or equal values become true
     // Larger values become false
@@ -368,7 +344,7 @@ namespace mtm {
         return matrix_new;
     }
 
-    // Function to check which values in the matrix are larger than the value passed
+    // Function to check which elements in the matrix are larger than the value passed
     // Returns new matrix with these rules:
     // Larger values become true
     // Smaller values become false
@@ -393,7 +369,7 @@ namespace mtm {
         return matrix_new;
     }
 
-    // Function to check which values in the matrix are equal or larger than the value passed
+    // Function to check which elements in the matrix are equal or larger than the value passed
     // Returns new matrix with these rules:
     // Larger or equal values become true
     // Smaller values become false
@@ -418,7 +394,7 @@ namespace mtm {
         return matrix_new;
     }
 
-    // Function to check which values in the matrix are equal to the value passed
+    // Function to check which elements in the matrix are equal to the value passed
     // Returns new matrix with these rules:
     // Equal values become true
     // Unequal values become false
@@ -443,7 +419,7 @@ namespace mtm {
         return matrix_new;
     }
 
-    // Function to check which values in the matrix are unequal to the value passed
+    // Function to check which elements in the matrix are unequal to the value passed
     // Returns new matrix with these rules:
     // Unequal values become true
     // Equal values become false
@@ -468,6 +444,8 @@ namespace mtm {
         return matrix_new;
     }
 
+    // Function checks if the matrix passed has at least one element whose value is true.
+    // If so, returns true, if not returns false
     template <class T>
     bool any(const Matrix<T>& matrix)
     {
@@ -475,7 +453,7 @@ namespace mtm {
         {
             for (int j = 0; j < matrix.width(); ++j)
             {
-                if(matrix(i,j) != 0)
+                if(matrix(i,j) != 0) //if a single elment is true, return true
                 {
                     return true;
                 }
@@ -484,6 +462,8 @@ namespace mtm {
         return false;
     }
 
+    // Function checks if all elements if the matrix passed have the value of true.
+    // If so, returns true, if not returns false
     template <class T>
     bool all(const Matrix<T>& matrix)
     {
@@ -491,7 +471,7 @@ namespace mtm {
         {
             for (int j = 0; j < matrix.width(); ++j)
             {
-                if(matrix(i,j) == 0)
+                if(matrix(i,j) == 0) //if a single elment is false, return false
                 {
                     return false;
                 }
@@ -511,6 +491,7 @@ namespace mtm {
             return "Mtm matrix error: An attempt to access an illegal element";
         }
     };
+
     template <class T>
     class Matrix<T>::IllegalInitialization  : public std::exception {
     public:
@@ -519,6 +500,7 @@ namespace mtm {
             return "Mtm matrix error: Illegal initialization values";
         }
     };
+
     template <class T>
     class Matrix<T>::DimensionMismatch  : public std::exception {
         Dimensions m1;

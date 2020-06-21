@@ -102,7 +102,7 @@ IntMatrix& IntMatrix::operator=(const IntMatrix& matrix)
     return *this;
 }
 
-// Function to check which values in the matrix are smaller than the int passed
+// Function to check which elements in the matrix are smaller than the int passed
 // Returns new matrix with these rules:
 // Smaller values become 1
 // Larger values become 0
@@ -125,7 +125,7 @@ IntMatrix mtm::operator<(IntMatrix& matrix, int num)
     return matrix_new;
 }
 
-// Function to check which values in the matrix are equal or smaller than the int passed
+// Function to check which elements in the matrix are equal or smaller than the int passed
 // Returns new matrix with these rules:
 // Smaller or equal values become 1
 // Larger values become 0
@@ -148,7 +148,7 @@ IntMatrix mtm::operator<=(IntMatrix& matrix, int num)
     return matrix_new;
 }
 
-// Function to check which values in the matrix are larger than the int passed
+// Function to check which elements in the matrix are larger than the int passed
 // Returns new matrix with these rules:
 // Larger values become 1
 // Smaller values become 0
@@ -171,7 +171,7 @@ IntMatrix mtm::operator>(IntMatrix& matrix, int num)
     return matrix_new;
 }
 
-// Function to check which values in the matrix are equal or larger than the int passed
+// Function to check which elements in the matrix are equal or larger than the int passed
 // Returns new matrix with these rules:
 // Larger or equal values become 1
 // Smaller values become 0
@@ -194,7 +194,7 @@ IntMatrix mtm::operator>=(IntMatrix& matrix, int num)
     return matrix_new;
 }
 
-// Function to check which values in the matrix are equal to the int passed
+// Function to check which elements in the matrix are equal to the int passed
 // Returns new matrix with these rules:
 // Equal values become 1
 // Unequal values become 0
@@ -217,7 +217,7 @@ IntMatrix mtm::operator==(IntMatrix& matrix, int num)
     return matrix_new;
 }
 
-// Function to check which values in the matrix are unequal to the int passed
+// Function to check which elements in the matrix are unequal to the int passed
 // Returns new matrix with these rules:
 // Unequal values become 1
 // Equal values become 0
@@ -347,6 +347,8 @@ IntMatrix mtm::operator+(const int value, const IntMatrix& matrix){
     return matrix + value;
 }
 
+// Function checks if the matrix passed has at least one element whose value is true.
+// If so, returns true, if not returns false
 bool mtm::any(const IntMatrix& matrix)
 {
     for (int i = 0; i <matrix.height(); ++i)
@@ -362,6 +364,8 @@ bool mtm::any(const IntMatrix& matrix)
     return false;
 }
 
+// Function checks if all elements if the matrix passed have the value of true.
+// If so, returns true, if not returns false
 bool mtm::all(const IntMatrix& matrix)
 {
     for (int i = 0; i < matrix.height(); ++i)
