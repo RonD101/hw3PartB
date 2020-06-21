@@ -6,7 +6,7 @@
 #define HW3PARTB_MATRIX_H
 
 #include "TemArray.h"
-#include "Auxiliaries.h"
+#include "PartA/Auxiliaries.h"
 using std::cout;
 using std::endl;
 

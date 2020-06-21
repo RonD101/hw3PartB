@@ -5,7 +5,7 @@
 #ifndef HW3_INTMATRIX_H
 #define HW3_INTMATRIX_H
 
-#include "../Auxiliaries.h"
+#include "Auxiliaries.h"
 
 namespace mtm {
     class IntMatrix {
