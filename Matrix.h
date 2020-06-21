@@ -21,6 +21,7 @@ namespace mtm {
         class IllegalInitialization;
         class DimensionMismatch;
         class iterator;
+        class const_iterator;
         iterator begin()
         {
             return iterator(this,1);
@@ -29,7 +30,6 @@ namespace mtm {
         {
             return iterator(this,this->size() + 1);
         }
-        class const_iterator;
         const_iterator begin() const
         {
             return const_iterator(this,1);
@@ -42,16 +42,16 @@ namespace mtm {
         explicit Matrix(const Dimensions& dimensions = Dimensions(1,1), T value = T());
         Matrix(const Matrix& matrix);
         ~Matrix() = default; //because of the RAII design there isn't a need for a special destructor
-        Matrix& operator=(const Matrix& matrix);
-        Matrix& operator+=(const int value);
-        Matrix operator-() const ;
-        T& operator()(int row_num,int col_num);
-        const T& operator()(int row_num,int col_num) const;
         Matrix transpose() const ;
         static Matrix<T> Diagonal(int dim, T value);
         int height() const;
         int width() const;
         int size() const;
+        Matrix& operator=(const Matrix& matrix);
+        Matrix& operator+=(const int value);
+        Matrix operator-() const ;
+        T& operator()(int row_num,int col_num);
+        const T& operator()(int row_num,int col_num) const;
     };
 
     template <class T>
@@ -187,28 +187,9 @@ namespace mtm {
         return (*matrix)(row_index - 1, col_index - 1);
     }
 
-    // Function to get number of rows of the matrix
-    template<class T>
-    int Matrix<T>::height() const {
-        return dim.getRow();
-    }
-
-    // Function to get number of columns of the matrix
-    template<class T>
-    int Matrix<T>::width() const {
-        return dim.getCol();
-    }
-
-    // Function to get the total number of values in the matrix
-    template<class T>
-    int Matrix<T>::size() const {
-        return this->width()*this->height();
-    }
-
-    template<class T>
-    Dimensions Matrix<T>::getDimensions() const {
-        return this->dim;
-    }
+    /////////////////////////////////////////////////////////////////////
+    /////////////////////-----class function-----////////////////////////
+    /////////////////////////////////////////////////////////////////////
 
     template<class T>
     Matrix<T>::Matrix(const Dimensions &dimensions, T value):dim(dimensions) {
@@ -236,39 +217,6 @@ namespace mtm {
     }
 
     template<class T>
-    Matrix<T> operator+(const Matrix<T> &matrix1, const Matrix<T> &matrix2) {
-        Dimensions d1(matrix1.height(),matrix1.width()), d2(matrix2.height(),matrix2.width());
-        if(d1 != d2)
-        {
-            throw typename Matrix<T>::DimensionMismatch(d1,d2);
-        }
-        Matrix<T> matrix(d1);
-        for (int i = 0; i < matrix.height(); ++i)
-        {
-            for (int j = 0; j < matrix.width(); ++j)
-            {
-                matrix(i,j) = matrix1(i,j) + matrix2(i,j);
-            }
-        }
-        return matrix;
-    }
-
-    // Function returns a transposed matrix
-    template <class T>
-    Matrix<T> Matrix<T>::transpose() const {
-        Dimensions d(this->width(), this->height());
-        Matrix matrix(d);
-        for (int j = 0; j < matrix.height(); ++j)
-        {
-            for (int i = 0; i < matrix.width(); ++i)
-            {
-                matrix(j,i) = (*this)(i,j);
-            }
-        }
-        return matrix;
-    }
-
-    template<class T>
     Matrix<T>::Matrix(const Matrix<T> &matrix) :dim(matrix.getDimensions()) {
         //allocating rows
         row = TemArray<TemArray<T>>(dim.getRow());
@@ -286,6 +234,100 @@ namespace mtm {
             }
         }
     }
+
+    template<class T>
+    Dimensions Matrix<T>::getDimensions() const {
+        return this->dim;
+    }
+
+    // Function returns a transposed matrix
+    template <class T>
+    Matrix<T> Matrix<T>::transpose() const {
+        Dimensions d(this->width(), this->height());
+        Matrix matrix(d);
+        for (int j = 0; j < matrix.height(); ++j)
+        {
+            for (int i = 0; i < matrix.width(); ++i)
+            {
+                matrix(j,i) = (*this)(i,j);
+            }
+        }
+        return matrix;
+    }
+
+    // Function that returns a diagonal matrix
+    template<class T>
+    Matrix<T> Matrix<T>::Diagonal(int dim, T value) {
+        if(dim < 1)
+        {
+            //If one of the matrix's dimensions isn't positive, throw an exception
+            throw Matrix<T>::IllegalInitialization();
+        }
+        Dimensions d(dim,dim);
+        Matrix matrix = Matrix(d, 0);
+        for (int i = 0; i < matrix.height(); ++i) {
+            matrix(i,i) = value;
+        }
+        return matrix;
+    }
+
+    // Function to get number of rows of the matrix
+    template<class T>
+    int Matrix<T>::height() const {
+        return dim.getRow();
+    }
+
+    // Function to get number of columns of the matrix
+    template<class T>
+    int Matrix<T>::width() const {
+        return dim.getCol();
+    }
+
+    // Function to get the total number of values in the matrix
+    template<class T>
+    int Matrix<T>::size() const {
+        return this->width()*this->height();
+    }
+
+    // Function checks if the matrix passed has at least one element whose value is true.
+    // If so, returns true, if not returns false
+    template <class T>
+    bool any(const Matrix<T>& matrix)
+    {
+        for (int i = 0; i <matrix.height(); ++i)
+        {
+            for (int j = 0; j < matrix.width(); ++j)
+            {
+                if(matrix(i,j) != 0) //if a single elment is true, return true
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    // Function checks if all elements if the matrix passed have the value of true.
+    // If so, returns true, if not returns false
+    template <class T>
+    bool all(const Matrix<T>& matrix)
+    {
+        for (int i = 0; i < matrix.height(); ++i)
+        {
+            for (int j = 0; j < matrix.width(); ++j)
+            {
+                if(matrix(i,j) == 0) //if a single elment is false, return false
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /////////////////////////////////////////////////////////////////////
+    /////////////////////-----class operator-----////////////////////////
+    /////////////////////////////////////////////////////////////////////
 
     template<class T>
     Matrix<T>& Matrix<T>::operator=(const Matrix<T> &matrix) {
@@ -311,6 +353,24 @@ namespace mtm {
             }
         }
         return *this;
+    }
+
+    template<class T>
+    Matrix<T> operator+(const Matrix<T> &matrix1, const Matrix<T> &matrix2) {
+        Dimensions d1(matrix1.height(),matrix1.width()), d2(matrix2.height(),matrix2.width());
+        if(d1 != d2)
+        {
+            throw typename Matrix<T>::DimensionMismatch(d1,d2);
+        }
+        Matrix<T> matrix(d1);
+        for (int i = 0; i < matrix.height(); ++i)
+        {
+            for (int j = 0; j < matrix.width(); ++j)
+            {
+                matrix(i,j) = matrix1(i,j) + matrix2(i,j);
+            }
+        }
+        return matrix;
     }
 
     template<class T>
@@ -356,33 +416,7 @@ namespace mtm {
     template <class T>
     std::ostream &operator<<(std::ostream &os, const Matrix<T> &matrix) {
           printMatrix(os,matrix.begin(),matrix.end(),matrix.width());
-//        int* flatMatrix = new int[matrix.size()];
-//        int counter = 0;
-//        Dimensions dims(matrix.height(), matrix.width());
-//        for (int i = 0; i < matrix.height(); ++i) {
-//            for (int j = 0; j < matrix.width(); ++j) {
-//                flatMatrix[counter++] = matrix(i,j);
-//            }
-//        }
-//        os << (printMatrix(flatMatrix, dims));
-//        delete[] flatMatrix;
         return os;
-    }
-
-    // Function that returns a diagonal matrix
-    template<class T>
-    Matrix<T> Matrix<T>::Diagonal(int dim, T value) {
-        if(dim < 1)
-        {
-            //If one of the matrix's dimensions isn't positive, throw an exception
-            throw Matrix<T>::IllegalInitialization();
-        }
-        Dimensions d(dim,dim);
-        Matrix matrix = Matrix(d, 0);
-        for (int i = 0; i < matrix.height(); ++i) {
-            matrix(i,i) = value;
-        }
-        return matrix;
     }
 
     // Function to check which elements in the matrix are smaller than the value passed
@@ -535,42 +569,6 @@ namespace mtm {
         return matrix_new;
     }
 
-    // Function checks if the matrix passed has at least one element whose value is true.
-    // If so, returns true, if not returns false
-    template <class T>
-    bool any(const Matrix<T>& matrix)
-    {
-        for (int i = 0; i <matrix.height(); ++i)
-        {
-            for (int j = 0; j < matrix.width(); ++j)
-            {
-                if(matrix(i,j) != 0) //if a single elment is true, return true
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    // Function checks if all elements if the matrix passed have the value of true.
-    // If so, returns true, if not returns false
-    template <class T>
-    bool all(const Matrix<T>& matrix)
-    {
-        for (int i = 0; i < matrix.height(); ++i)
-        {
-            for (int j = 0; j < matrix.width(); ++j)
-            {
-                if(matrix(i,j) == 0) //if a single elment is false, return false
-                {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////////////////////////// Exception classes //////////////////////
     ///////////////////////////////////////////////////////////////////
@@ -605,8 +603,8 @@ namespace mtm {
         }
     };
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////
 }
 
 #endif //HW3PARTB_MATRIX_H
