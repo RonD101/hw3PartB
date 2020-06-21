@@ -46,7 +46,7 @@ namespace mtm {
         int width() const;
         int size() const;
         Matrix& operator=(const Matrix& matrix);
-        Matrix& operator+=(const int value);
+        Matrix& operator+=(const T value);
         Matrix operator-() const ;
         T& operator()(int row_num,int col_num);
         const T& operator()(int row_num,int col_num) const;
@@ -350,6 +350,13 @@ namespace mtm {
                 (*this)(j,i) = matrix(j,i);
             }
         }
+        return *this;
+    }
+
+    template<class T>
+    Matrix<T>& Matrix<T>::operator+=(const T value) {
+        Matrix m(this->getDimensions(), value);
+        *this = *this + m;
         return *this;
     }
 

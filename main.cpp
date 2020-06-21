@@ -160,6 +160,10 @@ int main() {
         cout << e.what() << endl;
     }
 
+    Matrix<int> m13(d, 1);
+    m13 += 3;
+    cout << m13 << endl << "\n";
+
 //    IntMatrix im(Dimensions(2,7),5);
 //    Matrix<IntMatrix> m2(Dimensions(3,4),im);
 //    Matrix<IntMatrix> m3 = m2;
