@@ -117,6 +117,10 @@ namespace mtm {
 
     template<class T>
     T& Matrix<T>::iterator::operator*() {
+        if(index > matrix->size())
+        {
+            throw Matrix<T>::AccessIllegalElement();
+        }
         int col_index = index % matrix->width();
         if(col_index == 0){
             col_index = matrix->width();
