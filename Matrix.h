@@ -351,16 +351,17 @@ namespace mtm {
 
     template <class T>
     std::ostream &operator<<(std::ostream &os, const Matrix<T> &matrix) {
-        int* flatMatrix = new int[matrix.size()];
-        int counter = 0;
-        Dimensions dims(matrix.height(), matrix.width());
-        for (int i = 0; i < matrix.height(); ++i) {
-            for (int j = 0; j < matrix.width(); ++j) {
-                flatMatrix[counter++] = matrix(i,j);
-            }
-        }
-        os << (printMatrix(flatMatrix, dims));
-        delete[] flatMatrix;
+          printMatrix(os,matrix.begin(),matrix.end(),matrix.width());
+//        int* flatMatrix = new int[matrix.size()];
+//        int counter = 0;
+//        Dimensions dims(matrix.height(), matrix.width());
+//        for (int i = 0; i < matrix.height(); ++i) {
+//            for (int j = 0; j < matrix.width(); ++j) {
+//                flatMatrix[counter++] = matrix(i,j);
+//            }
+//        }
+//        os << (printMatrix(flatMatrix, dims));
+//        delete[] flatMatrix;
         return os;
     }
 

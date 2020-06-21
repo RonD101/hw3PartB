@@ -142,6 +142,7 @@ int main() {
     Matrix<char> m12(d, 'a');
     cout << all(m12) << endl;
 
+    cout << mTranspose << endl;
 //    IntMatrix im(Dimensions(2,7),5);
 //    Matrix<IntMatrix> m2(Dimensions(3,4),im);
 //    Matrix<IntMatrix> m3 = m2;
