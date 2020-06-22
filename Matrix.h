@@ -360,6 +360,22 @@ namespace mtm {
         return *this;
     }
 
+    template <class T>
+    Matrix<T> operator+(const Matrix<T>& matrix, const int value)
+    {
+        Matrix<T> m = matrix;
+        m += value;
+        return m;
+    }
+
+    template <class T>
+    Matrix<T> operator+(const int value, const Matrix<T>& matrix)
+    {
+        Matrix<T> m = matrix;
+        m += value;
+        return m;
+    }
+
     template<class T>
     Matrix<T> operator+(const Matrix<T> &matrix1, const Matrix<T> &matrix2) {
         Dimensions d1(matrix1.height(),matrix1.width()), d2(matrix2.height(),matrix2.width());

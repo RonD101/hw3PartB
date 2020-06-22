@@ -141,16 +141,9 @@ int main() {
     Matrix<char> m12(d, 'a');
     cout << all(m12) << endl; cout << "\n";
 
-    Matrix<int> m13(d, 1);
-    m13 += 3;
-    cout << m13 << endl << "\n";
-
-//    Matrix<int> m14(d, 3);
-//    m13 = m14 + -2;
-//    cout << m13 << endl << "\n";
-
-//    m13 = 2 + m14;
-//    cout << m13 << endl << "\n";
+    Matrix<int> m14(d, 1);
+    m14 += 3;
+    cout << m14 << endl << "\n";
 
     cout << mTranspose << endl;
 
@@ -173,6 +166,12 @@ int main() {
     Matrix<int> m13(d, 1);
     m13 += 3;
     cout << m13 << endl << "\n";
+
+    Matrix<int> m15 = m14 + -2;
+    cout << m15 << endl << "\n";
+
+   m15 = 2 + m14;
+   cout << m13 << endl << "\n";
 
 //    IntMatrix im(Dimensions(2,7),5);
 //    Matrix<IntMatrix> m2(Dimensions(3,4),im);
