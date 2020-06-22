@@ -5,7 +5,6 @@ using std::endl;
 
 using namespace mtm;
 int main() {
-
     Matrix<int>diagonal_2 = Matrix<int>::Diagonal(5,3);
     for (int i = 0; i < diagonal_2.height(); ++i) {
         for (int j = 0; j < diagonal_2.width(); ++j) {
