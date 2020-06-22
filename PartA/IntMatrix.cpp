@@ -1,4 +1,3 @@
-#include <iostream>
 #include "IntMatrix.h"
 
 using mtm::IntMatrix;
