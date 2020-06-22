@@ -1,7 +1,7 @@
 #include <iostream>
 #include "IntMatrix.h"
 
-using namespace mtm;
+using mtm::IntMatrix;
 
 IntMatrix::IntMatrix(const Dimensions& dimensions, int value):dim(dimensions)
 {
@@ -297,7 +297,7 @@ IntMatrix::IntMatrix(const IntMatrix &matrix):dim(matrix.height(),matrix.width()
     }
 }
 
-Dimensions IntMatrix::getDimensions() const {
+mtm::Dimensions IntMatrix::getDimensions() const {
     return this->dim;
 }
 
