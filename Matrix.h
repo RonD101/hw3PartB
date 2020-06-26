@@ -45,6 +45,8 @@ namespace mtm {
         int height() const;
         int width() const;
         int size() const;
+        template <class Condition>
+        Matrix apply(Condition condition) const;
         Matrix& operator=(const Matrix& matrix);
         Matrix& operator+=(const T value);
         Matrix operator-() const ;
@@ -57,9 +59,9 @@ namespace mtm {
     template <class T>
     Matrix<T> operator+(const Matrix<T>& matrix1, const Matrix<T>& matrix2);
     template <class T>
-    Matrix<T> operator+(const Matrix<T>& matrix, const int value);
+    Matrix<T> operator+(const Matrix<T>& matrix, const T value);
     template <class T>
-    Matrix<T> operator+(const int value, const Matrix<T>& matrix);
+    Matrix<T> operator+(const T value, const Matrix<T>& matrix);
     template <class T>
     Matrix<T> operator-(const Matrix<T>& matrix1, const Matrix<T>& matrix2);
     template <class T>
@@ -323,6 +325,18 @@ namespace mtm {
         return true;
     }
 
+    template<class T>
+    template<class Condition>
+    Matrix<T> Matrix<T>::apply(Condition condition) const {
+        Matrix<T> result(*this);
+        for (int i = 0; i < height(); ++i) {
+            for (int j = 0; j < width(); ++j) {
+                result(i,j) = condition(result(i,j));
+            }
+        }
+        return result;
+    }
+
     /////////////////////////////////////////////////////////////////////
     ////////////////////-----class operators-----////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -361,7 +375,7 @@ namespace mtm {
     }
 
     template <class T>
-    Matrix<T> operator+(const Matrix<T>& matrix, const int value)
+    Matrix<T> operator+(const Matrix<T>& matrix, const T value)
     {
         Matrix<T> m = matrix;
         m += value;
@@ -369,7 +383,7 @@ namespace mtm {
     }
 
     template <class T>
-    Matrix<T> operator+(const int value, const Matrix<T>& matrix)
+    Matrix<T> operator+(const T value, const Matrix<T>& matrix)
     {
         Matrix<T> m = matrix;
         m += value;
@@ -414,9 +428,9 @@ namespace mtm {
     T& Matrix<T>::operator()(int row_num, int col_num)
     {
         try {
-            return row[row_num][col_num];
+            return row[row_num - 1][col_num - 1];
         }
-        //we catch if there is illegal access in TemArray and rethrow it as Martix::AccessIllegalElement
+            //we catch if there is illegal access in TemArray and rethrow it as Martix::AccessIllegalElement
         catch (std::exception& e){
             throw Matrix<T>::AccessIllegalElement();
         }
@@ -426,9 +440,9 @@ namespace mtm {
     const T& Matrix<T>::operator()(int row_num, int col_num) const
     {
         try {
-            return row[row_num][col_num];
+            return row[row_num - 1][col_num - 1];
         }
-        //we catch if there is illegal access in TemArray and rethrow it as Martix::AccessIllegalElement
+            //we catch if there is illegal access in TemArray and rethrow it as Martix::AccessIllegalElement
         catch (std::exception& e){
             throw Matrix<T>::AccessIllegalElement();
         }
@@ -436,7 +450,7 @@ namespace mtm {
 
     template <class T>
     std::ostream &operator<<(std::ostream &os, const Matrix<T> &matrix) {
-          printMatrix(os,matrix.begin(),matrix.end(),matrix.width());
+        printMatrix(os,matrix.begin(),matrix.end(),matrix.width());
         return os;
     }
 
