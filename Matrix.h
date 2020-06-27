@@ -84,6 +84,8 @@ namespace mtm {
     /////////////////////////////////////////////////////////////////////
     ///////////////////////-----Iterator-----////////////////////////////
     /////////////////////////////////////////////////////////////////////
+
+    //
     template <class T>
     class Matrix<T>::iterator{
         Matrix<T>* matrix;
@@ -402,7 +404,7 @@ namespace mtm {
         {
             for (int j = 0; j < matrix.width(); ++j)
             {
-                matrix(i,j) = matrix1(i,j) + matrix2(i,j);
+                matrix(i,j) = matrix1(i,j) + matrix2(i,j); // Assuming there is =,+ operators for class T
             }
         }
         return matrix;

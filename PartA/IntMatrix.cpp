@@ -2,6 +2,7 @@
 
 using mtm::IntMatrix;
 
+// constructor for IntMatrix
 IntMatrix::IntMatrix(const Dimensions& dimensions, int value):dim(dimensions)
 {
     int dim_row = dimensions.getRow();
@@ -23,6 +24,7 @@ IntMatrix::IntMatrix(const Dimensions& dimensions, int value):dim(dimensions)
     }
 }
 
+// destructor for IntMatrix
 IntMatrix::~IntMatrix()
 {
     for (int i = 0; i < dim.getRow(); ++i)
@@ -42,6 +44,7 @@ IntMatrix IntMatrix::Identity(int dim) {
     return matrix;
 }
 
+// Output function prints IntMatrix using function printMatrix
 std::ostream& mtm::operator<<(std::ostream& os, const IntMatrix& matrix) {
     int* flatMatrix = new int[matrix.size()];
     int counter = 0;
@@ -71,6 +74,7 @@ int IntMatrix::size() const {
     return (this->height())*(this->width());
 }
 
+// operator= for IntMatrix
 IntMatrix& IntMatrix::operator=(const IntMatrix& matrix)
 {
     if(this == & matrix)
@@ -269,6 +273,7 @@ IntMatrix mtm::operator+(const IntMatrix &matrix1, const IntMatrix &matrix2)
     return matrix;
 }
 
+// Function returns new matrix which is the subtraction of the 2 matrices passed
 IntMatrix IntMatrix::operator-() const {
     IntMatrix matrix(this->getDimensions());
     for (int j = 0; j < matrix.height(); ++j)
@@ -281,6 +286,7 @@ IntMatrix IntMatrix::operator-() const {
     return matrix;
 }
 
+// Copy constructor for IntMatrix
 IntMatrix::IntMatrix(const IntMatrix &matrix):dim(matrix.height(),matrix.width()) {
     //allocating rows
     row = new int *[matrix.height()];
@@ -296,14 +302,18 @@ IntMatrix::IntMatrix(const IntMatrix &matrix):dim(matrix.height(),matrix.width()
     }
 }
 
+// function returns the dimensions of this matrix
 mtm::Dimensions IntMatrix::getDimensions() const {
     return this->dim;
 }
 
+// function returns the contents of the IntMatrix int the coordinates row_num, col_num
+// e.g int value = matrix(i, j)
 int& IntMatrix::operator()(int row_num, int col_num) {
     return row[row_num][col_num];
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const int& IntMatrix::operator()(int row_num, int col_num) const {
     return row[row_num][col_num];
 }
@@ -318,11 +328,14 @@ IntMatrix& IntMatrix::operator+=(const int value) {
     return *this;
 }
 
+
+// begin method returns iterator to first element of IntMatrix
 IntMatrix::iterator IntMatrix::begin()
 {
     return iterator(this,1);
 }
 
+// begin method returns iterator to last element of IntMatrix
 IntMatrix::iterator IntMatrix::end()
 {
     return iterator(this,this->size() + 1);
@@ -382,6 +395,7 @@ bool mtm::all(const IntMatrix& matrix)
 
 IntMatrix::iterator::iterator(IntMatrix *matrix, int index):matrix(matrix),index(index) {}
 
+// operator* returns the element pointed to by the iterator
 int& IntMatrix::iterator::operator*() {
     int col_index = index % matrix->width();
     if(col_index == 0){
@@ -398,20 +412,23 @@ int& IntMatrix::iterator::operator*() {
     return (*matrix)(row_index - 1, col_index - 1);
 }
 
-
+// operator== returns true if value in iterator is equal to that of other iterator
 bool IntMatrix::iterator::operator==(const IntMatrix::iterator &it) const {
     return this->index == it.index;
 }
 
+// operator!= returns true if value in iterator is unequal to that of other iterator
 bool IntMatrix::iterator::operator!=(const IntMatrix::iterator &it) const {
     return this->index != it.index;
 }
 
+// operator++ advances iterator to next element. Advancing past the end() iterator is undefined
 IntMatrix::iterator& IntMatrix::iterator::operator++() {
     index++;
     return *this;
 }
 
+// ++operator advances iterator to next element. Advancing past the end() iterator is undefined
 IntMatrix::iterator IntMatrix::iterator::operator++(int) {
     iterator result = *this;
     ++(*this);
