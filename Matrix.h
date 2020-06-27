@@ -85,7 +85,6 @@ namespace mtm {
     ///////////////////////-----Iterator-----////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    //
     template <class T>
     class Matrix<T>::iterator{
         Matrix<T>* matrix;
@@ -193,6 +192,8 @@ namespace mtm {
     /////////////////////-----class function-----////////////////////////
     /////////////////////////////////////////////////////////////////////
 
+    // constructor of matrix. if one of the dimensions is <= 1 throws exception IllegalInitialization
+    // Assuming there is = operator for class T
     template<class T>
     Matrix<T>::Matrix(const Dimensions &dimensions, T value):dim(dimensions) {
         if(dimensions.getRow() < 1 || dimensions.getCol() <1)
@@ -218,6 +219,8 @@ namespace mtm {
         }
     }
 
+    // copy constructor for matrix
+    // Assuming there is = operator for class T
     template<class T>
     Matrix<T>::Matrix(const Matrix<T> &matrix) :dim(matrix.getDimensions()) {
         //allocating rows
@@ -237,12 +240,14 @@ namespace mtm {
         }
     }
 
+    // function returns the dimensions of this matrix
     template<class T>
     Dimensions Matrix<T>::getDimensions() const {
         return this->dim;
     }
 
     // Function returns a transposed matrix
+    // Assuming there is = operator for class T
     template <class T>
     Matrix<T> Matrix<T>::transpose() const {
         Dimensions d(this->width(), this->height());
@@ -257,16 +262,16 @@ namespace mtm {
         return matrix;
     }
 
-    // Function that returns a diagonal matrix
+    // Function that returns a diagonal matrix. If one of the matrix's dimensions isn't positive, throw an exception
+    // Assuming there is = operator for class T
     template<class T>
     Matrix<T> Matrix<T>::Diagonal(int dim, T value) {
         if(dim < 1)
         {
-            //If one of the matrix's dimensions isn't positive, throw an exception
             throw Matrix<T>::IllegalInitialization();
         }
         Dimensions d(dim,dim);
-        Matrix matrix = Matrix(d, 0);
+        Matrix<T> matrix = Matrix(d);
         for (int i = 0; i < matrix.height(); ++i) {
             matrix(i,i) = value;
         }
@@ -300,7 +305,7 @@ namespace mtm {
         {
             for (int j = 0; j < matrix.width(); ++j)
             {
-                if(matrix(i,j) != 0) //if a single elment is true, return true
+                if(matrix(i,j) != 0) //if a single element is true, return true
                 {
                     return true;
                 }
@@ -318,7 +323,7 @@ namespace mtm {
         {
             for (int j = 0; j < matrix.width(); ++j)
             {
-                if(matrix(i,j) == 0) //if a single elment is false, return false
+                if(matrix(i,j) == 0) //if a single element is false, return false
                 {
                     return false;
                 }
