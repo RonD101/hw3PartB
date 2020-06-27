@@ -273,7 +273,7 @@ IntMatrix mtm::operator+(const IntMatrix &matrix1, const IntMatrix &matrix2)
     return matrix;
 }
 
-// Function returns new matrix which is the subtraction of the 2 matrices passed
+// operator-(unary) Return copy of the matrix with -value
 IntMatrix IntMatrix::operator-() const {
     IntMatrix matrix(this->getDimensions());
     for (int j = 0; j < matrix.height(); ++j)
@@ -307,23 +307,26 @@ mtm::Dimensions IntMatrix::getDimensions() const {
     return this->dim;
 }
 
-// function returns the contents of the IntMatrix int the coordinates row_num, col_num
+// function returns the contents of the IntMatrix in the coordinates row_num, col_num
 // e.g int value = matrix(i, j)
 int& IntMatrix::operator()(int row_num, int col_num) {
     return row[row_num][col_num];
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// function returns the contents of the const IntMatrix in the coordinates row_num, col_num
+// e.g int value = matrix(i, j)
 const int& IntMatrix::operator()(int row_num, int col_num) const {
     return row[row_num][col_num];
 }
 
+// Returns the subtraction of the 2 matrices passed
 IntMatrix mtm::operator-(const IntMatrix &matrix1, const IntMatrix &matrix2) {
     return matrix1 + -matrix2;
 }
 
+// Adds this matrix with value param and then assign to this
 IntMatrix& IntMatrix::operator+=(const int value) {
-    IntMatrix m(this->getDimensions(),value);
+    IntMatrix m(this->getDimensions(), value);
     *this = *this + m;
     return *this;
 }
@@ -335,26 +338,30 @@ IntMatrix::iterator IntMatrix::begin()
     return iterator(this,1);
 }
 
-// begin method returns iterator to last element of IntMatrix
+// end method returns iterator to last element of IntMatrix
 IntMatrix::iterator IntMatrix::end()
 {
     return iterator(this,this->size() + 1);
 }
 
+// begin method returns iterator to first element of const IntMatrix
 IntMatrix::const_iterator IntMatrix::begin() const {
     return const_iterator(this,1);
 }
 
+// end method returns iterator to first element of IntMatrix
 IntMatrix::const_iterator IntMatrix::end() const {
     return const_iterator(this,this->size() + 1);
 }
 
+// Returns new matrix which is the addition between the matrix and value params
 IntMatrix mtm::operator+(const IntMatrix& matrix, const int value){
     IntMatrix m(matrix);
     m += value;
     return m;
 }
 
+// Returns new matrix which is the addition between the matrix and value params
 IntMatrix mtm::operator+(const int value, const IntMatrix& matrix){
     return matrix + value;
 }
@@ -393,6 +400,7 @@ bool mtm::all(const IntMatrix& matrix)
     return true;
 }
 
+// constructor for internal iterator of IntMatrix
 IntMatrix::iterator::iterator(IntMatrix *matrix, int index):matrix(matrix),index(index) {}
 
 // operator* returns the element pointed to by the iterator
@@ -435,8 +443,10 @@ IntMatrix::iterator IntMatrix::iterator::operator++(int) {
     return result;
 }
 
+// constructor for internal iterator of const IntMatrix
 IntMatrix::const_iterator::const_iterator(const IntMatrix *matrix, int index):matrix(matrix),index(index) {}
 
+// operator* returns the element pointed to by the iterator (const)
 const int& IntMatrix::const_iterator::operator*() const {
     int col_index = index % matrix->width();
     if(col_index == 0){
@@ -453,19 +463,23 @@ const int& IntMatrix::const_iterator::operator*() const {
     return (*matrix)(row_index - 1, col_index - 1);
 }
 
+// operator== returns true if value in iterator is equal to that of other iterator (const)
 bool IntMatrix::const_iterator::operator==(const IntMatrix::const_iterator &it) const {
     return this->index == it.index;
 }
 
+// operator!= returns true if value in iterator is unequal to that of other iterator (const)
 bool IntMatrix::const_iterator::operator!=(const IntMatrix::const_iterator &it) const {
     return this->index != it.index;
 }
 
+// operator++ advances iterator to next element. Advancing past the end() iterator is undefined (const)
 IntMatrix::const_iterator& IntMatrix::const_iterator::operator++() {
     index++;
     return *this;
 }
 
+// ++operator advances iterator to next element. Advancing past the end() iterator is undefined (const)
 IntMatrix::const_iterator IntMatrix::const_iterator::operator++(int) {
     const_iterator result = *this;
     ++(*this);
