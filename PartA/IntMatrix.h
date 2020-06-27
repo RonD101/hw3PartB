@@ -145,19 +145,94 @@ namespace mtm {
 *
 * @param
 * value - The value to add for each element.
+*
 * @return
 * 	The assigned matrix
 */
         IntMatrix& operator+=(const int value);
+
+/**
+*	operator-: return copied matrix with -values
+*
+* @return
+* 	The copied matrix
+*/
         IntMatrix operator-() const ;
+
+/**
+*	operator(): Return element from matrix
+*
+* @param
+* rom_num - The row number of the element
+* col_num - The column number of the element
+* @return
+* 	Reference to the element
+*/
         int& operator()(int row_num,int col_num);
+
+/**
+*	operator(): Return a const element from matrix
+*
+* @param
+* rom_num - The row number of the element
+* col_num - The column number of the element
+* @return
+* 	Reference to the const element
+*/
         const int& operator()(int row_num,int col_num) const;
+
+/**
+*	transpose: Returns a copy of the matrix transposed.
+*
+* @return
+* 	The transposed matrix
+*/
         IntMatrix transpose() const ;
+
+/**
+*	Identity: Returns a copy of Identity matrix.
+*
+* @param
+* dim - the dimension of the Identity matrix
+* @return
+* 	The Identity matrix
+*/
         static IntMatrix Identity(int dim);
+
+/**
+*	height: Returns the height of the matrix (amount of row).
+*
+* @return
+* 	Amount of row
+*/
         int height() const;
+
+/**
+*	width: Returns the width of the matrix (amount of columns).
+*
+* @return
+* 	Amount of columns
+*/
         int width() const;
+
+/**
+*	size: Returns the amount of element in matrix.
+*
+* @return
+* 	Amount of elements
+*/
         int size() const;
     };
+
+/**
+*	operator<<: Returns a osstream to print.
+*
+* @param
+* os - ostream for the message to print
+* matrix -
+* @return
+* 	The Identity matrix
+*/
     std::ostream& operator<<(std::ostream& os, const IntMatrix& matrix);
     IntMatrix operator+(const IntMatrix& matrix1, const IntMatrix& matrix2);
     IntMatrix operator+(const IntMatrix& matrix, const int value);
