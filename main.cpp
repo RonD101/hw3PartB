@@ -167,11 +167,17 @@ int main() {
     m13 += 3;
     cout << m13 << endl << "\n";
 
-    Matrix<int> m15 = m14 + -2;
+    Matrix<int> m15 = m14 + -2 + m14;
     cout << m15 << endl << "\n";
 
    m15 = 2 + m14;
    cout << m13 << endl << "\n";
+    Matrix<std::string> ms(d,"0");
+    std::string str = "43";
+    cout << ms + str << endl;
+    cout << m5 << endl;
+    m5(1,3) = 3;
+    cout << m5 << endl;
 
 //    IntMatrix im(Dimensions(2,7),5);
 //    Matrix<IntMatrix> m2(Dimensions(3,4),im);

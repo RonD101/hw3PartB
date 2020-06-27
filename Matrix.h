@@ -428,7 +428,7 @@ namespace mtm {
     T& Matrix<T>::operator()(int row_num, int col_num)
     {
         try {
-            return row[row_num - 1][col_num - 1];
+            return row[row_num][col_num];
         }
             //we catch if there is illegal access in TemArray and rethrow it as Martix::AccessIllegalElement
         catch (std::exception& e){
@@ -440,7 +440,7 @@ namespace mtm {
     const T& Matrix<T>::operator()(int row_num, int col_num) const
     {
         try {
-            return row[row_num - 1][col_num - 1];
+            return row[row_num][col_num];
         }
             //we catch if there is illegal access in TemArray and rethrow it as Martix::AccessIllegalElement
         catch (std::exception& e){
