@@ -229,14 +229,54 @@ namespace mtm {
 *
 * @param
 * os - ostream for the message to print
-* matrix -
+* matrix - the matrix to print
 * @return
-* 	The Identity matrix
+* 	The ostream
 */
     std::ostream& operator<<(std::ostream& os, const IntMatrix& matrix);
+
+/**
+*	operator+: Returns a copy of the added matrix.
+*
+* @param
+* matrix1 - First matrix to add
+* matrix2 - Second matrix to add
+* @return
+* 	The added matrix
+*/
     IntMatrix operator+(const IntMatrix& matrix1, const IntMatrix& matrix2);
+
+/**
+*	operator+: Returns a copy of the added matrix with value.
+*
+* @param
+* matrix - The matrix to copy.
+* value - The value to add for each element.
+* @return
+* 	The added matrix
+*/
     IntMatrix operator+(const IntMatrix& matrix, const int value);
+
+/**
+*	operator+: Returns a copy of the added matrix with value.
+*
+* @param
+* value - The value to add for each element.
+* matrix - The matrix to copy.
+* @return
+* 	The added matrix
+*/
     IntMatrix operator+(const int value, const IntMatrix& matrix);
+
+/**
+*	operator-: Returns a copy of the subtract matrix.
+*
+* @param
+* matrix1 - The matrix to subtract from
+* matrix2 - The matrix to subtract
+* @return
+* 	The subtracted matrix
+*/
     IntMatrix operator-(const IntMatrix& matrix1, const IntMatrix& matrix2);
     IntMatrix operator<(IntMatrix& matrix, int num);
     IntMatrix operator<=(IntMatrix& matrix, int num);
