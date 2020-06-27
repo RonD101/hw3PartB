@@ -328,6 +328,15 @@ namespace mtm {
         iterator(const iterator&) = default;
         iterator& operator=(const iterator&) = default;
     };
+
+/**
+* Const Matrix's Iterator
+*
+* Implements of the matrix Iterator for const matrices.
+* The Iterator methods support the basic uses of a normal Iterator
+* (there is a small explanation above each method in the .cpp file)
+*/
+
     class IntMatrix::const_iterator{
         const IntMatrix* matrix;
         int index;
