@@ -41,6 +41,19 @@
 *                                          the two elements
 */
 
+/**
+*	mapGetFirst: Sets the internal iterator (also called current key element) to
+*	the first key element in the map. There doesn't need to be an internal order
+*  of the keys so the "first" key element is any key element.
+*	Use this to start iterating over the map.
+*	To continue iteration use mapGetNext
+*
+* @param map - The map for which to set the iterator and return the first
+* 		key element.
+* @return
+* 	NULL if a NULL pointer was sent or the map is empty.
+* 	The first key element of the map otherwise
+*/
 
 namespace mtm {
     class IntMatrix {
@@ -49,15 +62,92 @@ namespace mtm {
         Dimensions getDimensions() const;
     public:
         class iterator;
+
+/**
+*	begin:  Return a iterator for the top left element of the matrix.
+*	Use this to start iterating over the matrix.
+*
+* @return
+* 	The first element of the matrix
+*/
         iterator begin();
+
+/**
+*	end:  Return a iterator for element after the last element in matrix.
+*	Use this to stop iterating over the matrix.
+*
+* @return
+* 	The one after the last element of the matrix
+*/
         iterator end();
+
         class const_iterator;
+
+/**
+*	begin:  Return a iterator for the top left element of the matrix.
+*   the element cannot be change
+*	Use this to start iterating over const matrix.
+*
+* @return
+* 	The first element of the matrix
+*/
         const_iterator begin() const;
+/**
+*	end:  Return a iterator for element after the last element in matrix.
+*	Use this to stop iterating over const matrix.
+*
+* @return
+* 	The one after the last element of the matrix
+*/
         const_iterator end() const;
+
+/**
+*	Constructor: create a new matrix
+*
+* @param
+* dimensions - The dimension for the new matrix
+* value - Initial value (optional)
+* @return
+* 	The new matrix
+*/
         explicit IntMatrix(const Dimensions& dimensions, int value = 0);
+
+/**
+*	Copy Constructor: create a copy matrix
+*
+* @param
+* matrix - The matrix which we copy the values from.
+* @return
+* 	The copied matrix
+*/
         IntMatrix(const IntMatrix& matrix);
+
+/**
+*    Destructor: Destroy the matrix when her 'life' end.
+*
+* @return
+* 	No Return Value.
+*/
         ~IntMatrix();
+
+/**
+*	operator=: assign matrix
+*
+* @param
+* matrix - The matrix which we copy the values from.
+* @return
+* 	The assigned matrix
+*/
         IntMatrix& operator=(const IntMatrix& matrix);
+
+/**
+*	operator+=: add value to each element in matrix, and then assign the matrix
+*
+* @param
+* value - The value to add for each element.
+* @return
+* 	The assigned matrix
+*/
         IntMatrix& operator+=(const int value);
         IntMatrix operator-() const ;
         int& operator()(int row_num,int col_num);
