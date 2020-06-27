@@ -5,7 +5,42 @@
 #ifndef HW3_INTMATRIX_H
 #define HW3_INTMATRIX_H
 
-#include "../Auxiliaries.h"
+#include "Auxiliaries.h"
+
+/**
+* Int typed Matrix
+*
+* Implements a int typed Matrix.
+* The type of the matrix's value is int.
+* The matrix has an internal iterator for external use. For all functions
+* where the state of the iterator after calling that function is not stated,
+* it is undefined. That is you cannot assume anything about it.
+*
+* The following functions are available:
+*   the big three - constructor , destructor and copy constructor.
+*   begin		- Return an iterator for the start of the matrix.
+*   end		- Return an iterator for the end of the matrix.
+*   transpose		- Returns a copy of the matrix transposed.
+*   Identity	- Returns the Identity matrix.
+*   height		    - Return the height of the matrix (amount of rows).
+*   width  	    - Returns the width of the matrix (amount of columns).
+*   size		- Return the amount of variables in matrix
+*   any	    - Return true if any of the matrix's variable is different than 0, and false otherwise.
+*   all		-  Return true if all of the matrix's variable is different than 0, and false otherwise.
+*
+* The following operators are available:
+*   operator=      - Assignment of one matrix to the other
+*   operator+=      - Add matrices and then assign
+*   operator-(binary)   - Subtract one matrix from the other
+*   operator-(unary)    - Return copy of the matrix with -value
+*   operator()      - Return reference to value
+*   operator<<      - Return a ostream value to print
+*   operator+(Value)     - Add value to each element in matrix
+*   operator+(Matrix)   - Return copy of added matrices
+*   operator<,<=,>,>=,== ,!=     - Return a matrix of ones and zero depending on the result between
+*                                          the two elements
+*/
+
 
 namespace mtm {
     class IntMatrix {
