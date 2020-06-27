@@ -37,22 +37,8 @@
 *   operator<<      - Return a ostream value to print
 *   operator+(Value)     - Add value to each element in matrix
 *   operator+(Matrix)   - Return copy of added matrices
-*   operator<,<=,>,>=,== ,!=     - Return a matrix of ones and zero depending on the result between
+*   operator<,<=,>,>=,== ,!=     - Return a matrix of trues and false's depending on the result between
 *                                          the two elements
-*/
-
-/**
-*	mapGetFirst: Sets the internal iterator (also called current key element) to
-*	the first key element in the map. There doesn't need to be an internal order
-*  of the keys so the "first" key element is any key element.
-*	Use this to start iterating over the map.
-*	To continue iteration use mapGetNext
-*
-* @param map - The map for which to set the iterator and return the first
-* 		key element.
-* @return
-* 	NULL if a NULL pointer was sent or the map is empty.
-* 	The first key element of the map otherwise
 */
 
 namespace mtm {
@@ -278,14 +264,55 @@ namespace mtm {
 * 	The subtracted matrix
 */
     IntMatrix operator-(const IntMatrix& matrix1, const IntMatrix& matrix2);
+
+/**
+*	comparison operators: Returns matrix of trues and false's depending on the return value
+*           of the comparison.
+*
+* @param
+* matrix - The matrix to compare.
+* value - Value to compare to.
+* @return
+* 	The trues and false's matrix
+*/
     IntMatrix operator<(IntMatrix& matrix, int num);
     IntMatrix operator<=(IntMatrix& matrix, int num);
     IntMatrix operator>(IntMatrix& matrix, int num);
     IntMatrix operator>=(IntMatrix& matrix, int num);
     IntMatrix operator==(IntMatrix& matrix, int num);
     IntMatrix operator!=(IntMatrix& matrix, int num);
+
+/**
+*	any: check if any of the element is different from zero
+*
+* @param
+* matrix - The matrix to check.
+* @return
+* 	True if any of the element is different from zero, and false otherwise.
+*/
     bool any(const IntMatrix& matrix);
+
+/**
+*	all: check if all of the element is different from zero
+*
+* @param
+* matrix - The matrix to check.
+* @return
+* 	True if all the element are different from zero, and false otherwise.
+*/
     bool all(const IntMatrix& matrix);
+
+    /////////////////////////////////////////////////////////////////////
+    ///////////////////////-----Iterator-----////////////////////////////
+    /////////////////////////////////////////////////////////////////////
+
+/**
+* Matrix's Iterator
+*
+* Implements of the matrix Iterator.
+* The Iterator methods support the basic uses of a normal Iterator
+* (there is a small explanation above each method in the .cpp file)
+*/
 
     class IntMatrix::iterator{
         IntMatrix* matrix;
