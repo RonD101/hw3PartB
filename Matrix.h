@@ -300,6 +300,17 @@ namespace mtm {
     */
     template <class T>
     Matrix<T> operator-(const Matrix<T>& matrix1, const Matrix<T>& matrix2);
+
+    /**
+    *	comparison operators: Returns matrix of trues and false's depending on the return value
+    *           of the comparison.
+    *
+    * @param
+    * matrix - The matrix to compare.
+    * value - Value to compare to.
+    * @return
+    * 	The trues and false's matrix
+    */
     template <class T>
     Matrix<bool> operator<(Matrix<T>& matrix, T value);
     template <class T>
@@ -312,8 +323,26 @@ namespace mtm {
     Matrix<bool> operator==(Matrix<T>& matrix, T value);
     template <class T>
     Matrix<bool> operator!=(Matrix<T>& matrix, T value);
+
+    /**
+    *	any: check if any of the element is different from zero
+    *
+    * @param
+    * matrix - The matrix to check.
+    * @return
+    * 	True if any of the element is different from zero, and false otherwise.
+    */
     template <class T>
     bool any(const Matrix<T>& matrix);
+
+    /**
+    *	all: check if all of the element is different from zero
+    *
+    * @param
+    * matrix - The matrix to check.
+    * @return
+    * 	True if all the element are different from zero, and false otherwise.
+    */
     template <class T>
     bool all(const Matrix<T>& matrix);
 
@@ -321,7 +350,12 @@ namespace mtm {
     ///////////////////////-----Iterator-----////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    // Matrix's internal iterator
+    /**
+    * Matrix's Iterator
+    *
+    * Implements of the matrix Iterator.
+    * The Iterator methods support the basic uses of a normal Iterator
+    */
     template <class T>
     class Matrix<T>::iterator{
         Matrix<T>* matrix;
@@ -388,7 +422,12 @@ namespace mtm {
     /////////////////////-----const Iterator-----////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    // const Matrix's internal iterator
+    /**
+    * const Matrix's Iterator
+    *
+    * Implements of the const matrix Iterator.
+    * The Iterator methods support the basic uses of a normal Iterator
+    */
     template <class T>
     class Matrix<T>::const_iterator{
         const Matrix* matrix;
