@@ -56,55 +56,248 @@ namespace mtm {
         class iterator;
         class const_iterator;
 
-        // begin method returns iterator to first element of Matrix
+        /**
+        *	begin:  Return a iterator for the top left element of the matrix.
+        *	Use this to start iterating over the matrix.
+        *
+        * @return
+        * 	The first element of the matrix
+        */
         iterator begin()
         {
             return iterator(this,1);
         }
 
-        // end method returns iterator to last element of Matrix
+        /**
+        *	end:  Return a iterator for element after the last element in matrix.
+        *	Use this to stop iterating over the matrix.
+        *
+        * @return
+        * 	The one after the last element of the matrix
+        */
         iterator end()
         {
             return iterator(this,this->size() + 1);
         }
 
-        // begin method returns iterator to first element of const Matrix
+        /**
+        *	begin:  Return a iterator for the top left element of the matrix.
+        *   the element cannot be change
+        *	Use this to start iterating over const matrix.
+        *
+        * @return
+        * 	The first element of the matrix
+        */
         const_iterator begin() const
         {
             return const_iterator(this,1);
         }
 
-        // end method returns iterator to last element of const Matrix
+        /**
+        *	end:  Return a iterator for element after the last element in matrix.
+        *	Use this to stop iterating over const matrix.
+        *
+        * @return
+        * 	The one after the last element of the matrix
+        */
         const_iterator end() const
         {
             return const_iterator(this,this->size() + 1);
 
         }
+
+        /**
+        *	Constructor: create a new matrix
+        *
+        * @param
+        * dimensions - The dimension for the new matrix
+        * value - Initial value (optional)
+        * @return
+        * 	The new matrix
+        */
         explicit Matrix(const Dimensions& dimensions, T value = T());
+
+        /**
+        *	Copy Constructor: create a copy matrix
+        *
+        * @param
+        * matrix - The matrix which we copy the values from.
+        * @return
+        * 	The copied matrix
+        */
         Matrix(const Matrix& matrix);
+
+        /**
+        *    Destructor: Destroy the matrix when her 'life' end.
+        *
+        * @return
+        * 	No Return Value.
+        */
         ~Matrix() = default; //because of the RAII design there isn't a need for a special destructor
+
+        /**
+        *	transpose: Returns a copy of the matrix transposed.
+        *
+        * @return
+        * 	The transposed matrix
+        */
         Matrix transpose() const ;
+
+        /**
+        *	Diagonal: Returns a copy of Diagonal matrix.
+        *
+        * @param
+                * dim - the dimension of the Diagonal matrix
+        * @return
+        * 	The Diagonal matrix
+        */
         static Matrix<T> Diagonal(int dim, T value);
+
+        /**
+        *	height: Returns the height of the matrix (amount of row).
+        *
+        * @return
+        * 	Amount of row
+        */
         int height() const;
+
+        /**
+        *	width: Returns the width of the matrix (amount of columns).
+        *
+        * @return
+        * 	Amount of columns
+        */
         int width() const;
+
+        /**
+        *	size: Returns the amount of element in matrix.
+        *
+        * @return
+        * 	Amount of elements
+        */
         int size() const;
+
+        // class for function objects
         template <class Condition>
+
+        /**
+        *	apply: Returns a copy of Diagonal matrix.
+        *
+        * @param
+                * condition - the condition to apply on the matrix elements
+                    * condition is of class Condition
+        * @return
+        * 	The applied matrix
+        */
         Matrix apply(Condition condition) const;
+
+        /**
+        *	operator=: assign matrix
+        *
+        * @param
+        * matrix - The matrix which we copy the values from.
+        * @return
+        * 	The assigned matrix
+        */
         Matrix& operator=(const Matrix& matrix);
+
+        /**
+        *	operator+=: add value to each element in matrix, and then assign the matrix
+        *
+        * @param
+        * value - The value to add for each element.
+        * @return
+        * 	The assigned matrix
+        */
         Matrix& operator+=(const T value);
+
+        /**
+        *	operator-: return copied matrix with -values
+        *
+        * @return
+        * 	The copied matrix
+        */
         Matrix operator-() const ;
+        /**
+        *	operator(): Return element from matrix
+        *
+        * @param
+        * rom_num - The row number of the element
+        * col_num - The column number of the element
+        * @return
+        * 	Reference to the element
+        */
         T& operator()(int row_num,int col_num);
+
+        /**
+        *	operator(): Return a const element from matrix
+        *
+        * @param
+        * rom_num - The row number of the element
+        * col_num - The column number of the element
+        * @return
+        * 	Reference to the const element
+        */
         const T& operator()(int row_num,int col_num) const;
     };
 
+    /**
+    *	operator<<: Returns a osstream to print.
+    *
+    * @param
+    * os - ostream for the message to print
+    * matrix - the matrix to print
+    * @return
+    * 	The ostream
+    */
     template <class T>
     std::ostream& operator<<(std::ostream& os, const Matrix<T>& matrix);
+
+    /**
+    *	operator+: Returns a copy of the added matrix.
+    *
+    * @param
+    * matrix1 - First matrix to add
+    * matrix2 - Second matrix to add
+    * @return
+    * 	The added matrix
+    */
     template <class T>
     Matrix<T> operator+(const Matrix<T>& matrix1, const Matrix<T>& matrix2);
+
+    /**
+    *	operator+: Returns a copy of the added matrix with value.
+    *
+    * @param
+    * matrix - The matrix to copy.
+    * value - The value to add for each element.
+    * @return
+    * 	The added matrix
+    */
     template <class T>
     Matrix<T> operator+(const Matrix<T>& matrix, const T value);
+
+    /**
+    *	operator+: Returns a copy of the added matrix with value.
+    *
+    * @param
+    * value - The value to add for each element.
+    * matrix - The matrix to copy.
+    * @return
+    * 	The added matrix
+    */
     template <class T>
     Matrix<T> operator+(const T value, const Matrix<T>& matrix);
+
+    /**
+    *	operator-: Returns a copy of the subtract matrix.
+    *
+    * @param
+    * matrix1 - The matrix to subtract from
+    * matrix2 - The matrix to subtract
+    * @return
+    * 	The subtracted matrix
+    */
     template <class T>
     Matrix<T> operator-(const Matrix<T>& matrix1, const Matrix<T>& matrix2);
     template <class T>
