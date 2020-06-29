@@ -7,7 +7,6 @@
 
 #include "TemArray.h"
 #include "Auxiliaries.h"
-
 /**
 * Class T typed Matrix
 *
@@ -55,9 +54,7 @@ namespace mtm {
         class DimensionMismatch;
         class iterator;
         class const_iterator;
-
-        /**
-        *	begin:  Return a iterator for the top left element of the matrix.
+        /**	begin:  Return a iterator for the top left element of the matrix.
         *	Use this to start iterating over the matrix.
         *
         * @return
@@ -67,9 +64,7 @@ namespace mtm {
         {
             return iterator(this,1);
         }
-
-        /**
-        *	end:  Return a iterator for element after the last element in matrix.
+        /**	end:  Return a iterator for element after the last element in matrix.
         *	Use this to stop iterating over the matrix.
         *
         * @return
@@ -79,8 +74,7 @@ namespace mtm {
         {
             return iterator(this,this->size() + 1);
         }
-
-        /**
+/**
         *	begin:  Return a iterator for the top left element of the matrix.
         *   the element cannot be change
         *	Use this to start iterating over const matrix.
@@ -92,9 +86,7 @@ namespace mtm {
         {
             return const_iterator(this,1);
         }
-
-        /**
-        *	end:  Return a iterator for element after the last element in matrix.
+        /**	end:  Return a iterator for element after the last element in matrix.
         *	Use this to stop iterating over const matrix.
         *
         * @return
@@ -105,18 +97,17 @@ namespace mtm {
             return const_iterator(this,this->size() + 1);
 
         }
-
-        /**
-        *	Constructor: create a new matrix
+        /**	Constructor: create a new matrix
         *
         * @param
         * dimensions - The dimension for the new matrix
         * value - Initial value (optional)
         * @return
         * 	The new matrix
+        * 	@assumptions
+        * 	    there is = operator for class T
         */
         explicit Matrix(const Dimensions& dimensions, T value = T());
-
         /**
         *	Copy Constructor: create a copy matrix
         *
@@ -124,11 +115,11 @@ namespace mtm {
         * matrix - The matrix which we copy the values from.
         * @return
         * 	The copied matrix
+        * @assumptions
+        *   there is = operator for class T
         */
         Matrix(const Matrix& matrix);
-
-        /**
-        *    Destructor: Destroy the matrix when her 'life' end.
+        /**    Destructor: Destroy the matrix when her 'life' end.
         *
         * @return
         * 	No Return Value.
@@ -140,19 +131,20 @@ namespace mtm {
         *
         * @return
         * 	The transposed matrix
+        * @assumption
+        *   There is = operator for class T
         */
         Matrix transpose() const ;
-
-        /**
-        *	Diagonal: Returns a copy of Diagonal matrix.
+        /**	Diagonal: Returns a copy of Diagonal matrix.
         *
         * @param
                 * dim - the dimension of the Diagonal matrix
         * @return
         * 	The Diagonal matrix
+        * @assumption
+        *   There is = operator for class T
         */
         static Matrix<T> Diagonal(int dim, T value);
-
         /**
         *	height: Returns the height of the matrix (amount of row).
         *
@@ -160,49 +152,42 @@ namespace mtm {
         * 	Amount of row
         */
         int height() const;
-
-        /**
-        *	width: Returns the width of the matrix (amount of columns).
+        /**	width: Returns the width of the matrix (amount of columns).
         *
         * @return
         * 	Amount of columns
         */
         int width() const;
-
-        /**
-        *	size: Returns the amount of element in matrix.
+        /**	size: Returns the amount of element in matrix.
         *
         * @return
         * 	Amount of elements
         */
         int size() const;
-
         // class for function objects
         template <class Condition>
-
-        /**
-        *	apply: Returns a copy of Diagonal matrix.
+        /**	apply: Returns a copy of Diagonal matrix.
         *
         * @param
                 * condition - the condition to apply on the matrix elements
                     * condition is of class Condition
         * @return
         * 	The applied matrix
+        * @assumptions
+        *  there is = operator for class T
         */
         Matrix apply(Condition condition) const;
-
-        /**
-        *	operator=: assign matrix
+        /**	operator=: assign matrix
         *
         * @param
         * matrix - The matrix which we copy the values from.
         * @return
         * 	The assigned matrix
+         * 	@assumptions
+         *      there is = operator for class T
         */
         Matrix& operator=(const Matrix& matrix);
-
-        /**
-        *	operator+=: add value to each element in matrix, and then assign the matrix
+        /**	operator+=: add value to each element in matrix, and then assign the matrix
         *
         * @param
         * value - The value to add for each element.
@@ -210,15 +195,15 @@ namespace mtm {
         * 	The assigned matrix
         */
         Matrix& operator+=(const T value);
-
-        /**
-        *	operator-: return copied matrix with -values
+        /**	operator-: return copied matrix with -values
         *
         * @return
         * 	The copied matrix
+        * @assumption
+        *   There is =,- operator for class T
         */
         Matrix operator-() const ;
-        /**
+/**
         *	operator(): Return element from matrix
         *
         * @param
@@ -228,9 +213,7 @@ namespace mtm {
         * 	Reference to the element
         */
         T& operator()(int row_num,int col_num);
-
-        /**
-        *	operator(): Return a const element from matrix
+        /**	operator(): Return a const element from matrix
         *
         * @param
         * rom_num - The row number of the element
@@ -241,8 +224,7 @@ namespace mtm {
         const T& operator()(int row_num,int col_num) const;
     };
 
-    /**
-    *	operator<<: Returns a osstream to print.
+    /**	operator<<: Returns a osstream to print.
     *
     * @param
     * os - ostream for the message to print
@@ -252,21 +234,19 @@ namespace mtm {
     */
     template <class T>
     std::ostream& operator<<(std::ostream& os, const Matrix<T>& matrix);
-
-    /**
-    *	operator+: Returns a copy of the added matrix.
+    /**	operator+: Returns a copy of the added matrix.
     *
     * @param
     * matrix1 - First matrix to add
     * matrix2 - Second matrix to add
     * @return
     * 	The added matrix
+     * 	@assumptions
+     * 	Assuming there is =,+ operators for class T
     */
     template <class T>
     Matrix<T> operator+(const Matrix<T>& matrix1, const Matrix<T>& matrix2);
-
-    /**
-    *	operator+: Returns a copy of the added matrix with value.
+    /**	operator+: Returns a copy of the added matrix with value.
     *
     * @param
     * matrix - The matrix to copy.
@@ -276,7 +256,6 @@ namespace mtm {
     */
     template <class T>
     Matrix<T> operator+(const Matrix<T>& matrix, const T value);
-
     /**
     *	operator+: Returns a copy of the added matrix with value.
     *
@@ -288,7 +267,6 @@ namespace mtm {
     */
     template <class T>
     Matrix<T> operator+(const T value, const Matrix<T>& matrix);
-
     /**
     *	operator-: Returns a copy of the subtract matrix.
     *
@@ -300,7 +278,6 @@ namespace mtm {
     */
     template <class T>
     Matrix<T> operator-(const Matrix<T>& matrix1, const Matrix<T>& matrix2);
-
     /**
     *	comparison operators: Returns matrix of trues and false's depending on the return value
     *           of the comparison.
@@ -310,6 +287,8 @@ namespace mtm {
     * value - Value to compare to.
     * @return
     * 	The trues and false's matrix
+    * @assumptions
+    *   There are the <,<=,>,>=,==,!= operators for class T
     */
     template <class T>
     Matrix<bool> operator<(Matrix<T>& matrix, T value);
@@ -323,7 +302,6 @@ namespace mtm {
     Matrix<bool> operator==(Matrix<T>& matrix, T value);
     template <class T>
     Matrix<bool> operator!=(Matrix<T>& matrix, T value);
-
     /**
     *	any: check if any of the element is different from zero
     *
@@ -331,27 +309,27 @@ namespace mtm {
     * matrix - The matrix to check.
     * @return
     * 	True if any of the element is different from zero, and false otherwise.
+    * @assumption
+    * 	Assuming there is != operator for class T
     */
     template <class T>
     bool any(const Matrix<T>& matrix);
-
     /**
-    *	all: check if all of the element is different from zero
-    *
-    * @param
-    * matrix - The matrix to check.
-    * @return
-    * 	True if all the element are different from zero, and false otherwise.
-    */
+     *	all: check if all of the element is different from zero
+     *
+     * @param
+     * matrix - The matrix to check.
+     * @return
+     * 	True if all the element are different from zero, and false otherwise.
+     * @assumption
+     * 	Assuming there is == operator for class T    */
     template <class T>
     bool all(const Matrix<T>& matrix);
 
     /////////////////////////////////////////////////////////////////////
     ///////////////////////-----Iterator-----////////////////////////////
     /////////////////////////////////////////////////////////////////////
-
-    /**
-    * Matrix's Iterator
+    /** Matrix's Iterator
     *
     * Implements of the matrix Iterator.
     * The Iterator methods support the basic uses of a normal Iterator
@@ -364,14 +342,12 @@ namespace mtm {
         iterator(Matrix* matrix, int index):matrix(matrix),index(index) {}
     public:
         T& operator*();
-
         // operator++ prefix (++it)
         iterator& operator++()
         {
             index++;
             return *this;
         }
-
         // operator++ suffix (it++)
         iterator operator++(int)
         {
@@ -379,20 +355,18 @@ namespace mtm {
             ++(*this);
             return result;
         }
-
         // operator== for iterator
         bool operator==(const iterator& it) const
         {
             return this->index == it.index;
         }
-
         // operator!= for iterator
         bool operator!=(const iterator& it) const
         {
             return this->index != it.index;
         }
-        iterator(const iterator&) = default; // copy constructor for iterator
-        iterator& operator=(const iterator&) = default; // operator= for iterator
+        iterator(const iterator&) = default;  // copy constructor for iterator
+        iterator& operator=(const iterator&) = default;// operator= for iterator
     };
 
     // operator* returns the element pointed to by the iterator.
@@ -421,7 +395,6 @@ namespace mtm {
     /////////////////////////////////////////////////////////////////////
     /////////////////////-----const Iterator-----////////////////////////
     /////////////////////////////////////////////////////////////////////
-
     /**
     * const Matrix's Iterator
     *
@@ -436,14 +409,12 @@ namespace mtm {
         const_iterator(const Matrix* matrix, int index):matrix(matrix),index(index) {}
     public:
         const T& operator*() const;
-
         // operator++ prefix (++it)
         const_iterator& operator++()
         {
             index++;
             return *this;
         }
-
         // operator++ suffix (it++)
         const_iterator operator++(int)
         {
@@ -451,13 +422,11 @@ namespace mtm {
             ++(*this);
             return result;
         }
-
         // operator== for iterator
         bool operator==(const const_iterator& it) const
         {
             return this->index == it.index;
         }
-
         // operator!= for iterator
         bool operator!=(const const_iterator& it) const
         {
@@ -467,7 +436,6 @@ namespace mtm {
         const_iterator& operator=(const const_iterator&) = default; // operator= for iterator
     };
 
-
     // operator* returns the element pointed to by the iterator.
     // throws exception AccessIllegalElement if iterator doesn't point to a legal element
     template<class T>
@@ -475,8 +443,7 @@ namespace mtm {
         if(index > matrix->size())
         {
             throw Matrix<T>::AccessIllegalElement();
-        }
-        int col_index = index % matrix->width();
+        }        int col_index = index % matrix->width();
         if(col_index == 0){
             col_index = matrix->width();
         }
@@ -574,7 +541,7 @@ namespace mtm {
             throw Matrix<T>::IllegalInitialization();
         }
         Dimensions d(dim,dim);
-        Matrix<T> matrix = Matrix(d);
+        Matrix matrix = Matrix(d, 0);
         for (int i = 0; i < matrix.height(); ++i) {
             matrix(i,i) = value;
         }
@@ -593,7 +560,7 @@ namespace mtm {
         return dim.getCol();
     }
 
-    // Function to get the total number of elements in the matrix
+    // Function to get the total number of values in the matrix
     template<class T>
     int Matrix<T>::size() const {
         return this->width()*this->height();
@@ -609,7 +576,7 @@ namespace mtm {
         {
             for (int j = 0; j < matrix.width(); ++j)
             {
-                if(matrix(i,j) != 0) //if a single element is true, return true
+                if(matrix(i,j) != 0) //if a single elment is true, return true
                 {
                     return true;
                 }
@@ -628,7 +595,7 @@ namespace mtm {
         {
             for (int j = 0; j < matrix.width(); ++j)
             {
-                if(matrix(i,j) == 0) //if a single element is false, return false
+                if(matrix(i,j) == 0) //if a single elment is false, return false
                 {
                     return false;
                 }
@@ -763,7 +730,6 @@ namespace mtm {
             throw Matrix<T>::AccessIllegalElement();
         }
     }
-
     // function returns the contents of the Matrix in the coordinates row_num, col_num
     // e.g T value = matrix(i, j)
     template<class T>
@@ -781,7 +747,7 @@ namespace mtm {
     // output function for matrix using function printMatrix
     template <class T>
     std::ostream &operator<<(std::ostream &os, const Matrix<T> &matrix) {
-        printMatrix(os, matrix.begin(), matrix.end(), matrix.width());
+        printMatrix(os,matrix.begin(),matrix.end(),matrix.width());
         return os;
     }
 
@@ -977,7 +943,7 @@ namespace mtm {
         std::string out;
     public:
         DimensionMismatch(Dimensions m1, Dimensions m2):m1(m1),m2(m2),out("Mtm matrix error: Dimension mismatch: "
-        + m1.toString() + " " + m2.toString()) {}
+                                                                          + m1.toString() + " " + m2.toString()) {}
         const char* what() const noexcept override
         {
             return out.c_str();
@@ -989,3 +955,4 @@ namespace mtm {
 }
 
 #endif //HW3PARTB_MATRIX_H
+
